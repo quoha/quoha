@@ -12,7 +12,7 @@ to the Quoha community!
 
 If not, there are thousands of other applications for you to choose
 from. Keep searching until you find the perfect match for you. It
-it out there, somewhere.
+is out there, somewhere.
 
 LICENSE
 =======
