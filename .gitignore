@@ -1,1 +1,6 @@
 gplTemplate
+Howto.list
+howto.list
+bin/*
+lib/*
+tests/*

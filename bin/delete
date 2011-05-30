@@ -1,0 +1,15 @@
+#!/bin/bash
+
+retVal=0
+
+for file in "$@"
+do
+  [ -f "${file}" ] || continue
+  rm "${file}"
+  if [ $? != 0 ]
+  then
+    retVal=0
+  fi
+done
+
+exit ${retVal}
