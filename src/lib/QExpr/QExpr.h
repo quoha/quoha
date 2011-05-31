@@ -28,6 +28,7 @@ struct QCell {
 	int type;
 	union {
 		int         integer;
+		const char *string;
 	} data;
 };
 typedef struct QCell QCell;
@@ -66,11 +67,14 @@ int QExprIsString(QExpr *qe);
 
 /*****************************************************************************
  */
-QCell *QCellNew(void);
-QCell *QCellNewInteger(int i);
-QCell *QCellFree(QCell *qc);
-int    QCellAsInteger(QCell *qc);
-int    QCellIsInteger(QCell *qc);
-int    QCellIsNil(QCell *qc);
+QCell      *QCellNew(void);
+QCell      *QCellNewInteger(int i);
+QCell      *QCellNewString(const char *s);
+QCell      *QCellFree(QCell *qc);
+int         QCellAsInteger(QCell *qc);
+const char *QCellAsString(QCell *qc);
+int         QCellIsInteger(QCell *qc);
+int         QCellIsNil(QCell *qc);
+int         QCellIsString(QCell *qc);
 
 #endif

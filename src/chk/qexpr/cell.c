@@ -29,6 +29,7 @@ static void TestQCell(CuTest* tc) {
 
 	CuAssertTrue(tc, QCellIsNil(qc) != 0);
 	CuAssertTrue(tc, QCellIsInteger(qc) == 0);
+	CuAssertTrue(tc, QCellIsString(qc) == 0);
 
 	qc = QCellFree(qc);
         CuAssertTrue(tc, qc == 0);
@@ -43,7 +44,24 @@ static void TestQCellInteger(CuTest* tc) {
 
 	CuAssertTrue(tc, QCellIsNil(qc) == 0);
 	CuAssertTrue(tc, QCellIsInteger(qc) != 0);
+	CuAssertTrue(tc, QCellIsString(qc) == 0);
 	CuAssertTrue(tc, QCellAsInteger(qc) == i);
+
+	qc = QCellFree(qc);
+        CuAssertTrue(tc, qc == 0);
+}
+
+/*****************************************************************************
+ */
+static void TestQCellString(CuTest* tc) {
+	const char *s = "42";
+	QCell *qc = QCellNewString(s);
+        CuAssertTrue(tc, qc != 0);
+
+	CuAssertTrue(tc, QCellIsNil(qc) == 0);
+	CuAssertTrue(tc, QCellIsInteger(qc) == 0);
+	CuAssertTrue(tc, QCellIsString(qc) != 0);
+	CuAssertTrue(tc, strcmp(QCellAsString(qc), s) == 0);
 
 	qc = QCellFree(qc);
         CuAssertTrue(tc, qc == 0);
@@ -56,6 +74,7 @@ CuSuite *GetSuiteCell(void) {
 
         SUITE_ADD_TEST(suite, TestQCell);
         SUITE_ADD_TEST(suite, TestQCellInteger);
+        SUITE_ADD_TEST(suite, TestQCellString);
 
 	return suite;
 }

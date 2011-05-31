@@ -31,6 +31,12 @@ int QCellAsInteger(QCell *qc) {
 
 /*****************************************************************************
  */
+const char *QCellAsString(QCell *qc) {
+	return (qc && qc->type == QCELL_TYPE_STRING) ? qc->data.string : 0;
+}
+
+/*****************************************************************************
+ */
 QCell *QCellFree(QCell *qc) {
 	if (qc) {
 		free(qc);
@@ -43,6 +49,12 @@ QCell *QCellFree(QCell *qc) {
  */
 int QCellIsInteger(QCell *qc) {
 	return (qc && qc->type == QCELL_TYPE_INTEGER) ? 1 : 0;
+}
+
+/*****************************************************************************
+ */
+int QCellIsString(QCell *qc) {
+	return (qc && qc->type == QCELL_TYPE_STRING) ? 1 : 0;
 }
 
 /*****************************************************************************
@@ -70,6 +82,18 @@ QCell *QCellNewInteger(int i) {
 	if (qc) {
 		qc->type = QCELL_TYPE_INTEGER;
 		qc->data.integer = i;
+	}
+
+	return qc;
+}
+
+/*****************************************************************************
+ */
+QCell *QCellNewString(const char *s) {
+	QCell *qc = (QCell *)malloc(sizeof(QCell));
+	if (qc) {
+		qc->type = QCELL_TYPE_STRING;
+		qc->data.string = s;
 	}
 
 	return qc;

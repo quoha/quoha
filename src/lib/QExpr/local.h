@@ -33,5 +33,6 @@
 
 #define QCELL_TYPE_NIL     0x0000
 #define QCELL_TYPE_INTEGER 0x0001
+#define QCELL_TYPE_STRING  0x0002
 
 #endif
