@@ -21,10 +21,18 @@
 
 #include "local.h"
 
+#include <stdlib.h>
+
+/*****************************************************************************
+ */
 QuohaParser *QuohaParserNew(void) {
 	QuohaParser *qp = (QuohaParser *)malloc(sizeof(QuohaParser));
 	if (qp) {
-		qp->n = 0;
+		qp->version.major = QUOHAPARSER_VER_MAJOR;
+		qp->version.minor = QUOHAPARSER_VER_MINOR;
+		qp->version.patch = QUOHAPARSER_VER_PATCH;
+		qp->version.name  = QUOHAPARSER_VER_NAME;
+		qp->version.tag   = QUOHAPARSER_VER_TAG;
 	}
 
 	return qp;

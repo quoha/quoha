@@ -22,12 +22,36 @@
 #ifndef Quoha_src_lib_quohaparser_QuohaParser_H
 #define Quoha_src_lib_quohaparser_QuohaParser_H
 
+#define QUOHAPARSER_VER_MAJOR 0
+#define QUOHAPARSER_VER_MINOR 1
+#define QUOHAPARSER_VER_PATCH 0
+#define QUOHAPARSER_VER_NAME  "00.001.0000"
+#define QUOHAPARSER_VER_TAG   "alpha"
+
+/*****************************************************************************
+ */
 struct QuohaParser {
-  int n;
+  struct {
+    int major;
+    int minor;
+    int patch;
+    const char *name;
+    const char *tag;
+  } version;
 };
 typedef struct QuohaParser QuohaParser;
 
+/*****************************************************************************
+ */
 QuohaParser *QuohaParserNew(void);
 QuohaParser *QuohaParserFree(QuohaParser *qp);
+
+/*****************************************************************************
+ */
+const char  *QuohaParserVersionName(QuohaParser *qp);
+const char  *QuohaParserVersionTag(QuohaParser *qp);
+int          QuohaParserVersionMajor(QuohaParser *qp);
+int          QuohaParserVersionMinor(QuohaParser *qp);
+int          QuohaParserVersionPatch(QuohaParser *qp);
 
 #endif

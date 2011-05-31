@@ -28,6 +28,13 @@
 #include <CuTest.h>
 
 /*****************************************************************************
+ * standard libraries
+ */
+#include <stdio.h>
+#include <string.h>
+#include <stdlib.h>
+
+/*****************************************************************************
  * bring in the parser
  */
 #include "../../lib/quohaparser/QuohaParser.h"
@@ -37,5 +44,6 @@
  *    CuSuite *GetSuiteXXXX(void);
  */
 CuSuite *GetSuiteInit();
+CuSuite *GetSuiteVersion();
 
 #endif

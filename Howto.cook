@@ -44,6 +44,7 @@ lst_library      = CuTest QuohaParser;
 lst_program      = quoha;
 
 tests/quohaparser_fld = -Llib -lQuohaParser;
+tests/quohaparser_ldep = lib/libQuohaParser.a;
 
 /*****************************************************************************
  * external libraries
@@ -200,6 +201,8 @@ check: [lst_target]
   function print info -- running all tests;
   [testsh] [lst_check] set silent;
   function print info -- passed all tests;
+}
+test: check {
 }
 
 /*****************************************************************************
@@ -361,7 +364,7 @@ lib/lib%.a: [lib/%_obj]
 /*****************************************************************************
  * create a testing executable from object files
  */
-tests/%: [tests/%_obj] : lib/libCuTest.a
+tests/%: [tests/%_obj] : lib/libCuTest.a [tests/%_ldep]
   set unlink
 {
   function Say-Why [__FILE__] [__LINE__];

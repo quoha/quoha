@@ -1,3 +1,5 @@
+*_dep
+*.o
 gplTemplate
 Howto.list
 howto.list
