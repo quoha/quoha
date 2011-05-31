@@ -24,6 +24,13 @@
 
 /*****************************************************************************
  */
+struct QCell {
+	int type;
+};
+typedef struct QCell QCell;
+
+/*****************************************************************************
+ */
 struct QExpr {
 	int type;
 	union {
@@ -53,5 +60,11 @@ int QExprIsAtomNil(QExpr *qe);
 int QExprIsInteger(QExpr *qe);
 int QExprIsNil(QExpr *qe);
 int QExprIsString(QExpr *qe);
+
+/*****************************************************************************
+ */
+QCell *QCellNew(void);
+QCell *QCellFree(QCell *qc);
+int    QCellIsNil(QCell *qc);
 
 #endif

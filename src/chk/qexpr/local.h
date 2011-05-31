@@ -44,6 +44,7 @@
  *    CuSuite *GetSuiteXXXX(void);
  */
 CuSuite *GetSuiteInit();
+CuSuite *GetSuiteCell();
 CuSuite *GetSuiteAtom();
 
 #endif

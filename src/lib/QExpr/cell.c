@@ -19,18 +19,33 @@
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  ****************************************************************************/
 
-#ifndef Quoha_src_lib_QExpr_local_H
-#define Quoha_src_lib_QExpr_local_H
+#include "local.h"
 
-#include "QExpr.h"
+#include <stdlib.h>
 
-#define QE_TYPE_ATOM         0x0001  /*          0x01 */
-#define QE_TYPE_ATOM_NIL     0x0003  /* 0x0002 + 0x01 */
-#define QE_TYPE_ATOM_INTEGER 0x0005  /* 0x0004 + 0x01 */
-#define QE_TYPE_ATOM_STRING  0x0009  /* 0x0008 + 0x01 */
-#define QE_TYPE_LIST         0x0010  /*          0x10 */
-#define QE_TYPE_LIST_NIL     0x0030  /* 0x0020 + 0x10 */
+/*****************************************************************************
+ */
+QCell *QCellFree(QCell *qc) {
+	if (qc) {
+		free(qc);
+	}
 
-#define QCELL_TYPE_NIL 0x0000
+	return 0;
+}
 
-#endif
+/*****************************************************************************
+ */
+int QCellIsNil(QCell *qc) {
+	return (qc && qc->type == QCELL_TYPE_NIL) ? 1 : 0;
+}
+
+/*****************************************************************************
+ */
+QCell *QCellNew(void) {
+	QCell *qc = (QCell *)malloc(sizeof(QCell));
+	if (qc) {
+		qc->type = QCELL_TYPE_NIL;
+	}
+
+	return qc;
+}
