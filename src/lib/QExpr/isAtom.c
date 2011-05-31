@@ -24,5 +24,5 @@
 /*****************************************************************************
  */
 int QExprIsAtom(QExpr *qe) {
-	return (qe && qe->type == QE_TYPE_ATOM) ? 1 : 0;
+	return (qe && (qe->type == QE_TYPE_ATOM_INTEGER || qe->type == QE_TYPE_ATOM_STRING)) ? 1 : 0;
 }

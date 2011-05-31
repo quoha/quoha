@@ -25,7 +25,7 @@
  */
 void QExprSetAtomInteger(QExpr *qe, int i) {
 	if (qe) {
-		qe->type = QE_TYPE_ATOM;
+		qe->type = QE_TYPE_ATOM_INTEGER;
 		qe->data.integer = i;
 	}
 }

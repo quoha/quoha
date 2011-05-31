@@ -23,6 +23,6 @@
 
 /*****************************************************************************
  */
-int QExprAsInteger(QExpr *qe) {
-	return (qe && qe->type == QE_TYPE_ATOM_INTEGER) ? qe->data.integer : 0;
+int QExprIsString(QExpr *qe) {
+	return (qe && (qe->type == QE_TYPE_ATOM_STRING)) ? 1 : 0;
 }

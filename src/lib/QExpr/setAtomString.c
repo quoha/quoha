@@ -23,6 +23,9 @@
 
 /*****************************************************************************
  */
-int QExprAsInteger(QExpr *qe) {
-	return (qe && qe->type == QE_TYPE_ATOM_INTEGER) ? qe->data.integer : 0;
+void QExprSetAtomString(QExpr *qe, const char *s) {
+	if (qe) {
+		qe->type = QE_TYPE_ATOM_STRING;
+		qe->data.string = s;
+	}
 }

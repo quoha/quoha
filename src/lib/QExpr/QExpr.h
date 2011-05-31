@@ -27,7 +27,8 @@
 struct QExpr {
 	int type;
 	union {
-		int integer;
+		int         integer;
+		const char *string;
 	} data;
 };
 typedef struct QExpr QExpr;
@@ -39,11 +40,15 @@ QExpr *QExprFree(QExpr *qe);
 
 /*****************************************************************************
  */
-void QExprSetAtomInteger(QExpr *qe, int i);
-int  QExprAsInteger(QExpr *qe);
+int         QExprAsInteger(QExpr *qe);
+const char *QExprAsString(QExpr *qe);
+void        QExprSetAtomInteger(QExpr *qe, int i);
+void        QExprSetAtomString(QExpr *qe, const char *s);
 
 /*****************************************************************************
  */
 int QExprIsAtom(QExpr *qe);
+int QExprIsInteger(QExpr *qe);
+int QExprIsString(QExpr *qe);
 
 #endif

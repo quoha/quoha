@@ -72,7 +72,7 @@ cc_ident    = [catenate -DPKG_VER\= '\'"' [qVersion] '"\'']
               [catenate -DSRC_IDENT\= "'" '"@(#)"__DATE__" "__TIME__" "__FILE__' "'"] ;
 cc_incl     = [all_incl];
 cc_libs     = ;
-cc_flags    = [cc_ident] -I/Users/mdhender/local/include;
+cc_flags    = -g [cc_ident] -I/Users/mdhender/local/include;
 cc_static   = /*--static*/ ;
 
 /*****************************************************************************

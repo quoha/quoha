@@ -23,6 +23,6 @@
 
 /*****************************************************************************
  */
-int QExprAsInteger(QExpr *qe) {
-	return (qe && qe->type == QE_TYPE_ATOM_INTEGER) ? qe->data.integer : 0;
+const char *QExprAsString(QExpr *qe) {
+	return (qe && qe->type == QE_TYPE_ATOM_STRING) ? qe->data.string : 0;
 }

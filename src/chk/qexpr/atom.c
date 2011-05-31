@@ -26,10 +26,40 @@
 static void TestQExprAtom(CuTest* tc) {
 	QExpr *qe = QExprNew();
         CuAssertTrue(tc, qe != 0);
+}
+
+/*****************************************************************************
+ */
+static void TestQExprInteger(CuTest* tc) {
+	QExpr *qe = QExprNew();
+        CuAssertTrue(tc, qe != 0);
 
 	QExprSetAtomInteger(qe, 42);
         CuAssertTrue(tc, QExprIsAtom(qe) != 0);
+        CuAssertTrue(tc, QExprIsInteger(qe) != 0);
+        CuAssertTrue(tc, QExprIsString(qe) == 0);
+
         CuAssertTrue(tc, QExprAsInteger(qe) == 42);
+
+	qe = QExprFree(qe);
+        CuAssertTrue(tc, qe == 0);
+}
+
+/*****************************************************************************
+ */
+static void TestQExprString(CuTest* tc) {
+	QExpr *qe = QExprNew();
+        CuAssertTrue(tc, qe != 0);
+
+	const char *str = "42";
+
+	QExprSetAtomString(qe, str);
+        CuAssertTrue(tc, QExprIsAtom(qe) != 0);
+        CuAssertTrue(tc, QExprIsInteger(qe) == 0);
+        CuAssertTrue(tc, QExprIsString(qe) != 0);
+
+        CuAssertTrue(tc, QExprAsString(qe) == str);
+        CuAssertTrue(tc, strcmp(QExprAsString(qe), str) == 0);
 
 	qe = QExprFree(qe);
         CuAssertTrue(tc, qe == 0);
@@ -41,6 +71,8 @@ CuSuite *GetSuiteAtom(void) {
 	CuSuite *suite = CuSuiteNew();
 
         SUITE_ADD_TEST(suite, TestQExprAtom);
+        SUITE_ADD_TEST(suite, TestQExprInteger);
+        SUITE_ADD_TEST(suite, TestQExprString);
 
 	return suite;
 }
