@@ -19,31 +19,10 @@
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  ****************************************************************************/
 
-#ifndef quoha_src_chk_qexpr_local_H
-#define quoha_src_chk_qexpr_local_H
+#include "local.h"
 
 /*****************************************************************************
- * we use CuTest as our framework
  */
-#include <CuTest.h>
-
-/*****************************************************************************
- * standard libraries
- */
-#include <stdio.h>
-#include <string.h>
-#include <stdlib.h>
-
-/*****************************************************************************
- * bring in the parser
- */
-#include "../../lib/qexpr/QExpr.h"
-
-/*****************************************************************************
- * declare our test suites. every test suite looks like
- *    CuSuite *GetSuiteXXXX(void);
- */
-CuSuite *GetSuiteInit();
-CuSuite *GetSuiteAtom();
-
-#endif
+int QExprIsAtom(QExpr *qe) {
+	return (qe && qe->type == QE_TYPE_ATOM) ? 1 : 0;
+}

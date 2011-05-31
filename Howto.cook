@@ -337,7 +337,6 @@ function Say-Why =
 %0%.o: %0%.c
 {
   /*function Say-Why [__FILE__] [__LINE__];*/
-  echo % %0 %0%.c;
   [cc] -I[dirname %0%.c] [cc_incl] [cc_flags] -c %0%.c -o [target];
 }
 

@@ -24,4 +24,6 @@
 
 #include "QExpr.h"
 
+#define QE_TYPE_ATOM 0x0001
+
 #endif
