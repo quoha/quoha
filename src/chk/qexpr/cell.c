@@ -28,6 +28,22 @@ static void TestQCell(CuTest* tc) {
         CuAssertTrue(tc, qc != 0);
 
 	CuAssertTrue(tc, QCellIsNil(qc) != 0);
+	CuAssertTrue(tc, QCellIsInteger(qc) == 0);
+
+	qc = QCellFree(qc);
+        CuAssertTrue(tc, qc == 0);
+}
+
+/*****************************************************************************
+ */
+static void TestQCellInteger(CuTest* tc) {
+	int    i = 42;
+	QCell *qc = QCellNewInteger(i);
+        CuAssertTrue(tc, qc != 0);
+
+	CuAssertTrue(tc, QCellIsNil(qc) == 0);
+	CuAssertTrue(tc, QCellIsInteger(qc) != 0);
+	CuAssertTrue(tc, QCellAsInteger(qc) == i);
 
 	qc = QCellFree(qc);
         CuAssertTrue(tc, qc == 0);
@@ -39,6 +55,7 @@ CuSuite *GetSuiteCell(void) {
 	CuSuite *suite = CuSuiteNew();
 
         SUITE_ADD_TEST(suite, TestQCell);
+        SUITE_ADD_TEST(suite, TestQCellInteger);
 
 	return suite;
 }

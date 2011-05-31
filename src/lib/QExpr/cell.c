@@ -25,12 +25,24 @@
 
 /*****************************************************************************
  */
+int QCellAsInteger(QCell *qc) {
+	return (qc && qc->type == QCELL_TYPE_INTEGER) ? qc->data.integer : 0;
+}
+
+/*****************************************************************************
+ */
 QCell *QCellFree(QCell *qc) {
 	if (qc) {
 		free(qc);
 	}
 
 	return 0;
+}
+
+/*****************************************************************************
+ */
+int QCellIsInteger(QCell *qc) {
+	return (qc && qc->type == QCELL_TYPE_INTEGER) ? 1 : 0;
 }
 
 /*****************************************************************************
@@ -45,6 +57,19 @@ QCell *QCellNew(void) {
 	QCell *qc = (QCell *)malloc(sizeof(QCell));
 	if (qc) {
 		qc->type = QCELL_TYPE_NIL;
+		qc->data.integer = 0;
+	}
+
+	return qc;
+}
+
+/*****************************************************************************
+ */
+QCell *QCellNewInteger(int i) {
+	QCell *qc = (QCell *)malloc(sizeof(QCell));
+	if (qc) {
+		qc->type = QCELL_TYPE_INTEGER;
+		qc->data.integer = i;
 	}
 
 	return qc;

@@ -26,6 +26,9 @@
  */
 struct QCell {
 	int type;
+	union {
+		int         integer;
+	} data;
 };
 typedef struct QCell QCell;
 
@@ -64,7 +67,10 @@ int QExprIsString(QExpr *qe);
 /*****************************************************************************
  */
 QCell *QCellNew(void);
+QCell *QCellNewInteger(int i);
 QCell *QCellFree(QCell *qc);
+int    QCellAsInteger(QCell *qc);
+int    QCellIsInteger(QCell *qc);
 int    QCellIsNil(QCell *qc);
 
 #endif

@@ -31,6 +31,7 @@
 #define QE_TYPE_LIST         0x0010  /*          0x10 */
 #define QE_TYPE_LIST_NIL     0x0030  /* 0x0020 + 0x10 */
 
-#define QCELL_TYPE_NIL 0x0000
+#define QCELL_TYPE_NIL     0x0000
+#define QCELL_TYPE_INTEGER 0x0001
 
 #endif
