@@ -43,12 +43,15 @@ QExpr *QExprFree(QExpr *qe);
 int         QExprAsInteger(QExpr *qe);
 const char *QExprAsString(QExpr *qe);
 void        QExprSetAtomInteger(QExpr *qe, int i);
+void        QExprSetAtomNil(QExpr *qe);
 void        QExprSetAtomString(QExpr *qe, const char *s);
 
 /*****************************************************************************
  */
 int QExprIsAtom(QExpr *qe);
+int QExprIsAtomNil(QExpr *qe);
 int QExprIsInteger(QExpr *qe);
+int QExprIsNil(QExpr *qe);
 int QExprIsString(QExpr *qe);
 
 #endif

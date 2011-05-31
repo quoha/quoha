@@ -29,6 +29,12 @@ int QExprIsAtom(QExpr *qe) {
 
 /*****************************************************************************
  */
+int QExprIsAtomNil(QExpr *qe) {
+	return (qe && (qe->type == QE_TYPE_ATOM_NIL)) ? 1 : 0;
+}
+
+/*****************************************************************************
+ */
 int QExprIsInteger(QExpr *qe) {
 	return (qe && (qe->type == QE_TYPE_ATOM_INTEGER)) ? 1 : 0;
 }

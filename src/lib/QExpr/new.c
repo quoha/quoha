@@ -28,6 +28,7 @@
 QExpr *QExprNew(void) {
 	QExpr *qe = (QExpr *)malloc(sizeof(QExpr));
 	if (qe) {
+		qe->type = QE_TYPE_ATOM_NIL;
 	}
 
 	return qe;
