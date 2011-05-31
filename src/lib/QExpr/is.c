@@ -26,3 +26,15 @@
 int QExprIsAtom(QExpr *qe) {
 	return (qe && ((qe->type & QE_TYPE_ATOM) == QE_TYPE_ATOM)) ? 1 : 0;
 }
+
+/*****************************************************************************
+ */
+int QExprIsInteger(QExpr *qe) {
+	return (qe && (qe->type == QE_TYPE_ATOM_INTEGER)) ? 1 : 0;
+}
+
+/*****************************************************************************
+ */
+int QExprIsString(QExpr *qe) {
+	return (qe && (qe->type == QE_TYPE_ATOM_STRING)) ? 1 : 0;
+}
