@@ -19,8 +19,8 @@
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  ****************************************************************************/
 
-#ifndef Quoha_src_lib_quohaparser_local_H
-#define Quoha_src_lib_quohaparser_local_H
+#ifndef Quoha_src_lib_QuohaParser_local_H
+#define Quoha_src_lib_QuohaParser_local_H
 
 #include "QuohaParser.h"
 
