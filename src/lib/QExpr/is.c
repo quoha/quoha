@@ -41,6 +41,12 @@ int QExprIsInteger(QExpr *qe) {
 
 /*****************************************************************************
  */
+int QExprIsNil(QExpr *qe) {
+	return (qe && (qe->type == QE_TYPE_ATOM_NIL || qe->type == QE_TYPE_LIST_NIL)) ? 1 : 0;
+}
+
+/*****************************************************************************
+ */
 int QExprIsString(QExpr *qe) {
 	return (qe && (qe->type == QE_TYPE_ATOM_STRING)) ? 1 : 0;
 }

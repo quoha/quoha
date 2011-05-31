@@ -38,6 +38,7 @@ static void TestQExprInteger(CuTest* tc) {
 	QExprSetAtomInteger(qe, 42);
         CuAssertTrue(tc, QExprIsAtom(qe) != 0);
         CuAssertTrue(tc, QExprIsAtomNil(qe) == 0);
+        CuAssertTrue(tc, QExprIsNil(qe) == 0);
         CuAssertTrue(tc, QExprIsInteger(qe) != 0);
         CuAssertTrue(tc, QExprIsString(qe) == 0);
 
@@ -54,6 +55,7 @@ static void TestQExprNil(CuTest* tc) {
         CuAssertTrue(tc, qe != 0);
         CuAssertTrue(tc, QExprIsAtom(qe) != 0);
         CuAssertTrue(tc, QExprIsAtomNil(qe) != 0);
+        CuAssertTrue(tc, QExprIsNil(qe) != 0);
         CuAssertTrue(tc, QExprIsInteger(qe) == 0);
         CuAssertTrue(tc, QExprIsString(qe) == 0);
 }
@@ -69,6 +71,7 @@ static void TestQExprString(CuTest* tc) {
 	QExprSetAtomString(qe, str);
         CuAssertTrue(tc, QExprIsAtom(qe) != 0);
         CuAssertTrue(tc, QExprIsAtomNil(qe) == 0);
+        CuAssertTrue(tc, QExprIsNil(qe) == 0);
         CuAssertTrue(tc, QExprIsInteger(qe) == 0);
         CuAssertTrue(tc, QExprIsString(qe) != 0);
 
