@@ -1,0 +1,49 @@
+CONS CELL has two CELLS (CAR and CDR)
+
+CAR and CDR may point to any valid data (must point to valid data).
+
+Data is either an ATOM or another CONS CELL.
+
+( FOO )
+
+ +===+===+
+ [ * | *----> NIL
+ +=|=+===+
+   |
+   v
+  FOO
+
+( FOO BAR )
+
+ +===+===+   +===+===+
+ [ * | *---->[ * | *----> NIL
+ +=|=+===+   +=|=+===+
+   |           |
+   v           v
+  FOO         BAR
+
+( FOO ( BAR ) )
+
+ +===+===+   +===+===+
+ [ * | *---->[ * | *----> NIL
+ +=|=+===+   +=|=+===+
+   |           |
+   v           v
+  FOO        +===+===+
+             [ * | *----> NIL
+             +=|=+===+
+               |
+               v
+              BAR
+
+
+( FOO BAR SNU BAR ROO )
+
+ +===+===+   +===+===+   +===+===+   +===+===+   +===+===+
+ [ * | *---->[ * | *---->[ * | *---->[ * | *---->[ * | *----> NIL
+ +=|=+===+   +=|=+===+   +=|=+===+   +=|=+=|=+   +=|=+===+
+   |           |           |           |           |
+   v           |           v           |           v
+  FOO          |          SNU          |          ROO
+               v                       |
+              BAR <--------------------+
