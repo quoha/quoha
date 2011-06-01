@@ -21,31 +21,38 @@
 
 #include "local.h"
 
+#include <stdlib.h>
+
 /*****************************************************************************
  */
-int
-main(int argc, char *argv[])
-{
-	/* this is our global suite */
-	CuSuite *suite  = CuSuiteNew();
+QCell *QConsCellCar(QConsCell *qcc) {
+	return qcc ? qcc->car : 0;
+}
 
-	/* register the functions in the order that we should run them */
-	CuSuiteAddSuite(suite, GetSuiteInit());
-	CuSuiteAddSuite(suite, GetSuiteCell());
-	CuSuiteAddSuite(suite, GetSuiteAtom());
-	CuSuiteAddSuite(suite, GetSuiteConsCell());
+/*****************************************************************************
+ */
+QCell *QConsCellCdr(QConsCell *qcc) {
+	return qcc ? qcc->cdr : 0;
+}
 
-	/* run them */
-	CuSuiteRun(suite);
+/*****************************************************************************
+ */
+QConsCell *QConsCellFree(QConsCell *qcc) {
+	if (qcc) {
+		free(qcc);
+	}
 
-	/* format our output for the log */
-	CuString *output = CuStringNew();
-	CuSuiteSummary(suite, output);
-	CuSuiteDetails(suite, output);
-	printf("%s\n", output->buffer);
+	return 0;
+}
 
-	/* there's no public interface to the failCount, so cheat
-	 * and use the value directly
-	 */
-	return suite->failCount == 0 ? 0 : 2;
+/*****************************************************************************
+ */
+QConsCell *QConsCellNew(QCell *car, QCell *cdr) {
+	QConsCell *qcc = (QConsCell *)malloc(sizeof(QConsCell));
+	if (qcc) {
+		qcc->car = car;
+		qcc->cdr = cdr;
+	}
+
+	return qcc;
 }

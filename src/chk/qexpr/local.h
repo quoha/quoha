@@ -43,8 +43,9 @@
  * declare our test suites. every test suite looks like
  *    CuSuite *GetSuiteXXXX(void);
  */
-CuSuite *GetSuiteInit();
-CuSuite *GetSuiteCell();
 CuSuite *GetSuiteAtom();
+CuSuite *GetSuiteCell();
+CuSuite *GetSuiteConsCell();
+CuSuite *GetSuiteInit();
 
 #endif

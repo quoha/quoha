@@ -35,6 +35,14 @@ typedef struct QCell QCell;
 
 /*****************************************************************************
  */
+struct QConsCell {
+	QCell *car;
+	QCell *cdr;
+};
+typedef struct QConsCell QConsCell;
+
+/*****************************************************************************
+ */
 struct QExpr {
 	int type;
 	union {
@@ -76,5 +84,12 @@ const char *QCellAsString(QCell *qc);
 int         QCellIsInteger(QCell *qc);
 int         QCellIsNil(QCell *qc);
 int         QCellIsString(QCell *qc);
+
+/*****************************************************************************
+ */
+QConsCell *QConsCellNew(QCell *car, QCell *cdr);
+QConsCell *QConsCellFree(QConsCell *qcc);
+QCell     *QConsCellCar(QConsCell *qcc);
+QCell     *QConsCellCdr(QConsCell *qcc);
 
 #endif
