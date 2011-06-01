@@ -19,8 +19,8 @@
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  ****************************************************************************/
 
-#ifndef Quoha_src_lib_qexpr_QExpr_H
-#define Quoha_src_lib_qexpr_QExpr_H
+#ifndef Quoha_src_lib_QExpr_QExpr_H
+#define Quoha_src_lib_QExpr_QExpr_H
 
 #include "QCell.h"
 #include "QConsCell.h"
