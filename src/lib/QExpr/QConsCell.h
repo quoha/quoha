@@ -19,42 +19,24 @@
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  ****************************************************************************/
 
-#ifndef Quoha_src_lib_qexpr_QExpr_H
-#define Quoha_src_lib_qexpr_QExpr_H
+#ifndef Quoha_src_lib_qexpr_QConsCell_H
+#define Quoha_src_lib_qexpr_QConsCell_H
 
 #include "QCell.h"
-#include "QConsCell.h"
 
 /*****************************************************************************
  */
-struct QExpr {
-	int type;
-	union {
-		int         integer;
-		const char *string;
-	} data;
+struct QConsCell {
+	QCell *car;
+	QCell *cdr;
 };
-typedef struct QExpr QExpr;
+typedef struct QConsCell QConsCell;
 
 /*****************************************************************************
  */
-QExpr *QExprNew(void);
-QExpr *QExprFree(QExpr *qe);
-
-/*****************************************************************************
- */
-int         QExprAsInteger(QExpr *qe);
-const char *QExprAsString(QExpr *qe);
-void        QExprSetAtomInteger(QExpr *qe, int i);
-void        QExprSetAtomNil(QExpr *qe);
-void        QExprSetAtomString(QExpr *qe, const char *s);
-
-/*****************************************************************************
- */
-int QExprIsAtom(QExpr *qe);
-int QExprIsAtomNil(QExpr *qe);
-int QExprIsInteger(QExpr *qe);
-int QExprIsNil(QExpr *qe);
-int QExprIsString(QExpr *qe);
+QConsCell *QConsCellNew(QCell *car, QCell *cdr);
+QConsCell *QConsCellFree(QConsCell *qcc);
+QCell     *QConsCellCar(QConsCell *qcc);
+QCell     *QConsCellCdr(QConsCell *qcc);
 
 #endif
