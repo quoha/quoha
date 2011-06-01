@@ -33,3 +33,73 @@ QExpr *QExprNew(void) {
 
 	return qe;
 }
+
+/*****************************************************************************
+ */
+QExpr *QExprFree(QExpr *qe) {
+	if (qe) {
+		free(qe);
+	}
+
+	return 0;
+}
+
+/*****************************************************************************
+ */
+int QExprAsInteger(QExpr *qe) {
+	return (qe && qe->type == QE_TYPE_ATOM_INTEGER) ? qe->data.integer : 0;
+}
+
+/*****************************************************************************
+ */
+const char *QExprAsString(QExpr *qe) {
+	return (qe && qe->type == QE_TYPE_ATOM_STRING) ? qe->data.string : 0;
+}
+
+/*****************************************************************************
+ */
+int QExprIsAtom(QExpr *qe) {
+	return (qe && ((qe->type & QE_TYPE_ATOM) == QE_TYPE_ATOM)) ? 1 : 0;
+}
+
+/*****************************************************************************
+ */
+int QExprIsAtomNil(QExpr *qe) {
+	return (qe && (qe->type == QE_TYPE_ATOM_NIL)) ? 1 : 0;
+}
+
+/*****************************************************************************
+ */
+int QExprIsInteger(QExpr *qe) {
+	return (qe && (qe->type == QE_TYPE_ATOM_INTEGER)) ? 1 : 0;
+}
+
+/*****************************************************************************
+ */
+int QExprIsNil(QExpr *qe) {
+	return (qe && (qe->type == QE_TYPE_ATOM_NIL || qe->type == QE_TYPE_LIST_NIL)) ? 1 : 0;
+}
+
+/*****************************************************************************
+ */
+int QExprIsString(QExpr *qe) {
+	return (qe && (qe->type == QE_TYPE_ATOM_STRING)) ? 1 : 0;
+}
+
+/*****************************************************************************
+ */
+void QExprSetAtomInteger(QExpr *qe, int i) {
+	if (qe) {
+		qe->type = QE_TYPE_ATOM_INTEGER;
+		qe->data.integer = i;
+	}
+}
+
+/*****************************************************************************
+ */
+void QExprSetAtomString(QExpr *qe, const char *s) {
+	if (qe) {
+		qe->type = QE_TYPE_ATOM_STRING;
+		qe->data.string = s;
+	}
+}
