@@ -22,16 +22,7 @@
 #ifndef Quoha_src_lib_qexpr_QExpr_H
 #define Quoha_src_lib_qexpr_QExpr_H
 
-/*****************************************************************************
- */
-struct QCell {
-	int type;
-	union {
-		int         integer;
-		const char *string;
-	} data;
-};
-typedef struct QCell QCell;
+#include "QCell.h"
 
 /*****************************************************************************
  */
@@ -72,18 +63,6 @@ int QExprIsAtomNil(QExpr *qe);
 int QExprIsInteger(QExpr *qe);
 int QExprIsNil(QExpr *qe);
 int QExprIsString(QExpr *qe);
-
-/*****************************************************************************
- */
-QCell      *QCellNew(void);
-QCell      *QCellNewInteger(int i);
-QCell      *QCellNewString(const char *s);
-QCell      *QCellFree(QCell *qc);
-int         QCellAsInteger(QCell *qc);
-const char *QCellAsString(QCell *qc);
-int         QCellIsInteger(QCell *qc);
-int         QCellIsNil(QCell *qc);
-int         QCellIsString(QCell *qc);
 
 /*****************************************************************************
  */
