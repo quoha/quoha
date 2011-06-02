@@ -17,7 +17,7 @@ The first type is a list containing a single atom.  The second is a list contain
   3. ( A ( B ) )
   4. ( ( A ) ( B ) )
 
-Lets call the boxes QCell. This structure would have a type flag because the box can hold a pointer to an atom, a cons-cell or nil. Along with that type flag, we need a union that holds the three pointers.
+Lets call the boxes QCell. This structure would have a type flag because the box can hold a pointer to an atom, a cons-cell or nil. Along with that type flag, we need a union that holds the three pointers.::
 
   struct QCell {
     int type;
@@ -28,7 +28,7 @@ Lets call the boxes QCell. This structure would have a type flag because the box
     }
   };
 
-I don't know what goes in a QAtom yet, just that it needs a union holding every possible type of atom. For that, we need the type flag.
+I don't know what goes in a QAtom yet, just that it needs a union holding every possible type of atom. For that, we need the type flag.::
 
   struct QAtom {
     int type;
@@ -37,13 +37,13 @@ I don't know what goes in a QAtom yet, just that it needs a union holding every 
     } data;
   };
 
-Same for nil (we won't really implement it this way, it's just for discussion).
+Same for nil (we won't really implement it this way, it's just for discussion).::
 
   struct QNil {
     ...
   };
 
-The updated QCell looks like:
+The updated QCell looks like::
 
   struct QCell {
     int type;
@@ -62,7 +62,7 @@ Using QConsCell for cons-cell, the structure doesn't need a type flag because th
   };
 
 
-The updated QCell looks like:
+The updated QCell looks like::
 
   struct QAtom {
     int type;
