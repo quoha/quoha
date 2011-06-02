@@ -43,7 +43,7 @@ Same for nil (we won't really implement it this way, it's just for discussion).:
     ...
   };
 
-The updated QCell looks like::
+The updated QCell looks like:::
 
   struct QCell {
     int type;
@@ -88,3 +88,13 @@ The updated QCell looks like::
     struct QCell *car;
     struct QCell *cdr;
   };
+
+Parsing logic should be easy.
+
+  a. If we find a single atom, return a QAtom.
+  b. If we find an open parentheses, return a QConsCell.
+  c. If we find a close parentheses, return a QNil to end the current list.
+  d. If we are given a QAtom, do something with it. Probably something like add it to the active QConsCell.
+  e. If we are given a QConsCell, do something with it. Probably something like add it to the active QConsCell.
+  f. If we are given a QNil, do something with it. Probably something like close out the active QConsCell and pop it from the stack.
+
