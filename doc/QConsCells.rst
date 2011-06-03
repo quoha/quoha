@@ -33,6 +33,7 @@ The structures for this look like:::
 
   struct QNode {
     int            typeRight;
+    int            typeLeft;
     union {
       struct QAtom *atom;
       struct QNode *node;
