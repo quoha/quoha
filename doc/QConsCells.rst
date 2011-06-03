@@ -106,7 +106,7 @@ Simplifying and reducing, we come up with a structure that looks very similar to
       ...
     } data;
   };
-
+  
   struct QConsCell {
     int                 carType;
     int                 cdrType;
@@ -119,29 +119,7 @@ Simplifying and reducing, we come up with a structure that looks very similar to
 Parsing
 =======
 
-Parsing logic should be easy.
-
-  a. If we find a single atom, return a QAtom.
-  b. If we find an open parentheses, return a start-list token.
-  c. If we find a close parentheses, return a end-list token to end the current list.
-  d. If we are given a QAtom, do something with it. Probably something like add it to the active QConsCell.
-  e. If we are given a start-list token, do something with it. Probably something like add it to the active QConsCell.
-  f. If we are given a end-list token, do something with it. Probably something like close out the active QConsCell and pop it from the stack.
-
-Did we mention that it would be easy to use stacks to process this? Assume that we have this input:::
-
-  ( A ( B C ) )
-  
-We should end up with a structure that looks like:::
-
-  +===+===+   +===+===+
-  [ A | *-+-->[ * | *-+--> NIL
-  +===+===+   +=+=+===+
-                |
-                v
-              +===+===+   +===+===+
-              [ B | *-+-->[ C | *-+--> NIL
-              +===+===+   +===+===+
+Parsing logic should be straight-forward.
 
 Here is the pseudo-code for how to parse the expression:::
 
@@ -156,7 +134,7 @@ Here is the pseudo-code for how to parse the expression:::
         if list is empty
           stack.top.append(new node(NIL, NULL))
         else
-          stack.top.append(new node(list, NULL))
+          stack.top.append(new node(list.first, NULL))
         end if
       else
         stack.top.append(new node(token, NULL))
@@ -165,4 +143,33 @@ Here is the pseudo-code for how to parse the expression:::
     while not end of input
   end if
 
+Note that there is logic to detect empty lists. We want to keep empty lists separate from NIL. Feels like the right thing to do.
 
+Also, there will be error checking in there to confirm that we have balanced the open and close parentheses.
+
+Go ahead and follow the pseudo-code for this input:::
+
+  ( A ( B C ) )
+
+We should end up with a structure that looks like:::
+
+  +===+===+   +===+===+
+  [ A | *-+-->[ * | *-+--> NIL
+  +===+===+   +=+=+===+
+                |
+                v
+              +===+===+   +===+===+
+              [ B | *-+-->[ C | *-+--> NIL
+              +===+===+   +===+===+
+
+Tell me, though, what the structure for the empty list looks like.
+
+Nil versus ()
+=============
+
+Nil should be different than the empty list. Nil should be an atom that does not exist. The empty list is a list with no elements in it.
+
+Boolean values
+==============
+
+We have true, false and nil. Not true is false and not false is true. Nil indicates that the value is neither true nor false. Not nil is not the same as true or false.
