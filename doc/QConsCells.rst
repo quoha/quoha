@@ -132,61 +132,37 @@ Did we mention that it would be easy to use stacks to process this? Assume that 
 
   ( A ( B C ) )
   
-  Input: '('
-  Action: Push QConsCell on stack with car and cdr set to null.
-  Action: Set current cons-cell to QConsCell on top of stack.
-  
-  Input: 'A'
-  Action: Create QAtom.
-  Action: Set car of current cons-cell to this QAtom.
-  
-  Input: '('
-  Action: Push QConsCell on stack with car and cdr set to null.
-  Action: Set current cons-cell to this QConsCell.
-  
-  Input: 'B'
-  Action: Create QAtom.
-  Action: Set car of current cons-cell to this QAtom.
-  
-  Input: 'C'
-  Action: Create QAtom.
-  Action: Create QConsCell and set car to this QAtom.
-  Action: Set  car of current cons-cell to this QConsCell.
-  Action: Set current cons-cell to this QConsCell.
-  
-  Input: ')'
-  Action: Create QAtom. Set to QNil.
-  Action: Set cdr of current cons-cell to this QAtom.
-  Action: Pop stack.
-  Action: Set current cons-cell to QConsCell on top of stack.
-  
-  Input: ')'
-  Action: Create QAtom. Set to QNil.
-  Action: Set cdr of current cons-cell to this QAtom.
-  Action: Pop stack.
-  Action: Set current cons-cell to QConsCell on top of stack.
+We should end up with a structure that looks like:::
 
-How do we represent NIL versus ()?
+  +===+===+   +===+===+
+  [ A | *-+-->[ * | *-+--> NIL
+  +===+===+   +=+=+===+
+                |
+                v
+              +===+===+   +===+===+
+              [ B | *-+-->[ C | *-+--> NIL
+              +===+===+   +===+===+
 
-Maybe some pseudo-code would make this clearer.::
+Here is the pseudo-code for how to parse the expression:::
 
-  root = NULL
-  if input is ATOM then
-    root = ATOM
-  else if input is '(' then
-    initialize stack
-      entry has { first , last } of type node
+  -- List { node first; node last }
+  --
+  if token is not ATOM then
+    do
+      if token is '(' then
+        stack.push(List(NULL, NULL))
+      else if input is ')' then
+        list = stack.pop
+        if list is empty
+          stack.top.append(new node(NIL, NULL))
+        else
+          stack.top.append(new node(list, NULL))
+        end if
+      else
+        stack.top.append(new node(token, NULL))
+      end if
+      get next token
     while not end of input
-      if input is '(' then
-        stack.push(first, curr)
-      if input is ')' then
-        first, last = stack.pop
-        last.left = new node
-        last.left.right = first
-        curr = last
-      if input is ATOM then
-        // append to list
-        curr.left = new node(ATOM, NULL)
-        curr      = curr.left
+  end if
 
 
