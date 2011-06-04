@@ -22,12 +22,15 @@
 #ifndef Quoha_src_lib_QExpr_local_H
 #define Quoha_src_lib_QExpr_local_H
 
-#include "QExpr.h"
+#include "QCons.h"
+
+//#include "QExpr.h"
 
 #define QE_TYPE_ATOM         0x0001  /*          0x01 */
 #define QE_TYPE_ATOM_NIL     0x0003  /* 0x0002 + 0x01 */
 #define QE_TYPE_ATOM_INTEGER 0x0005  /* 0x0004 + 0x01 */
-#define QE_TYPE_ATOM_STRING  0x0009  /* 0x0008 + 0x01 */
+#define QE_TYPE_ATOM_STRING  0x0007  /* 0x0006 + 0x01 */
+#define QE_TYPE_ATOM_USTRING 0x0009  /* 0x0008 + 0x01 */
 #define QE_TYPE_LIST         0x0010  /*          0x10 */
 #define QE_TYPE_LIST_NIL     0x0030  /* 0x0020 + 0x10 */
 

@@ -30,10 +30,10 @@ main(int argc, char *argv[])
 	CuSuite *suite  = CuSuiteNew();
 
 	/* register the functions in the order that we should run them */
-	CuSuiteAddSuite(suite, GetSuiteInit());
-	CuSuiteAddSuite(suite, GetSuiteCell());
 	CuSuiteAddSuite(suite, GetSuiteAtom());
-	CuSuiteAddSuite(suite, GetSuiteConsCell());
+	//CuSuiteAddSuite(suite, GetSuiteInit());
+	//CuSuiteAddSuite(suite, GetSuiteCell());
+	//CuSuiteAddSuite(suite, GetSuiteConsCell());
 
 	/* run them */
 	CuSuiteRun(suite);

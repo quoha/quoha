@@ -24,18 +24,18 @@
 /*****************************************************************************
  */
 static void TestQExprFree(CuTest* tc) {
-	QExpr *qe = QExprNew();
-        CuAssertTrue(tc, qe != 0);
+	//QExpr *qe = QExprNew();
+        //CuAssertTrue(tc, qe != 0);
 
-	qe = QExprFree(qe);
-        CuAssertTrue(tc, qe == 0);
+	//qe = QExprFree(qe);
+        //CuAssertTrue(tc, qe == 0);
 }
 
 /*****************************************************************************
  */
 static void TestQExprNew(CuTest* tc) {
-	QExpr *qe = QExprNew();
-        CuAssertTrue(tc, qe != 0);
+	//QExpr *qe = QExprNew();
+        //CuAssertTrue(tc, qe != 0);
 }
 
 /*****************************************************************************

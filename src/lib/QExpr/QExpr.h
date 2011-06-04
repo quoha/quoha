@@ -22,6 +22,7 @@
 #ifndef Quoha_src_lib_QExpr_QExpr_H
 #define Quoha_src_lib_QExpr_QExpr_H
 
+#if 0
 #include "QCell.h"
 #include "QConsCell.h"
 
@@ -57,4 +58,5 @@ int QExprIsInteger(QExpr *qe);
 int QExprIsNil(QExpr *qe);
 int QExprIsString(QExpr *qe);
 
+#endif
 #endif

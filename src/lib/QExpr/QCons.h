@@ -19,23 +19,10 @@
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  ****************************************************************************/
 
-#ifndef Quoha_src_lib_QExpr_QConsCell_H
-#define Quoha_src_lib_QExpr_QConsCell_H
+#ifndef Quoha_src_lib_QExpr_QCons_H
+#define Quoha_src_lib_QExpr_QCons_H
 
-//#include "QCell.h"
-
-/*****************************************************************************
- */
-struct QAtom {
-	int type;
-	union {
-		int                  integer;
-		double               number;
-		const char          *string;
-		const unsigned char *ustring;
-	} data;
-};
-typedef struct QAtom QAtom;
+#include "QAtom.h"
 
 /*****************************************************************************
  */
@@ -51,16 +38,16 @@ typedef struct QCell QCell;
 /*****************************************************************************
  */
 struct QCons {
-	QCell left;
-	QCell right;
+	QCell *left;
+	QCell *right;
 };
-typedef struct QConsCell QConsCell;
+typedef struct QCons QCons;
 
 /*****************************************************************************
  */
-QConsCell *QConsCellNew(QCell *left, QCell *right);
-QConsCell *QConsCellFree(QConsCell *qcc);
-QCell     *QConsCellLeft(QConsCell *qcc);
-QCell     *QConsCellRight(QConsCell *qcc);
+QCons *QConsNew(QCell *left, QCell *right);
+QCons *QConsFree(QCons *qcc);
+QCell *QConsLeft(QCons *qcc);
+QCell *QConsRight(QCons *qcc);
 
 #endif

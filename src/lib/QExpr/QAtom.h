@@ -19,33 +19,45 @@
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  ****************************************************************************/
 
-#ifndef quoha_src_chk_qexpr_local_H
-#define quoha_src_chk_qexpr_local_H
+#ifndef Quoha_src_lib_QExpr_QAtom_H
+#define Quoha_src_lib_QExpr_QAtom_H
 
 /*****************************************************************************
- * we use CuTest as our framework
  */
-#include <CuTest.h>
+struct QAtom {
+	int type;
+	union {
+		int                  integer;
+		double               number;
+		const char          *string;
+		const unsigned char *ustring;
+		void                *vob;
+	} data;
+};
+typedef struct QAtom QAtom;
 
 /*****************************************************************************
- * standard libraries
  */
-#include <stdio.h>
-#include <string.h>
-#include <stdlib.h>
+QAtom *QAtomNew(void);
+QAtom *QAtomFree(QAtom *atom);
 
 /*****************************************************************************
- * bring in the library headers
  */
-#include "../../lib/qexpr/QCons.h"
+int QAtomIsInteger(QAtom *atom);
+int QAtomIsNil(QAtom *atom);
+int QAtomIsString(QAtom *atom);
 
 /*****************************************************************************
- * declare our test suites. every test suite looks like
- *    CuSuite *GetSuiteXXXX(void);
  */
-CuSuite *GetSuiteAtom();
-CuSuite *GetSuiteCell();
-CuSuite *GetSuiteConsCell();
-CuSuite *GetSuiteInit();
+QAtom *QAtomSetInteger(QAtom *atom, int integer);
+QAtom *QAtomSetNil(QAtom *atom);
+QAtom *QAtomSetString(QAtom *atom, const char *string);
+QAtom *QAtomSetUString(QAtom *atom, const unsigned char *ustring);
+
+/*****************************************************************************
+ */
+int                  QAtomAsInteger(QAtom *atom);
+const          char *QAtomAsString(QAtom *atom);
+const unsigned char *QAtomAsUString(QAtom *atom);
 
 #endif

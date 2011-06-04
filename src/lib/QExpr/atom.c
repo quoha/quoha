@@ -19,89 +19,103 @@
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  ****************************************************************************/
 
-#if 0
 #include "local.h"
 
 #include <stdlib.h>
 
 /*****************************************************************************
  */
-QExpr *QExprNew(void) {
-	QExpr *qe = (QExpr *)malloc(sizeof(QExpr));
-	if (qe) {
-		qe->type = QE_TYPE_ATOM_NIL;
-	}
-
-	return qe;
+QAtom *QAtomNew(void) {
+	return QAtomSetNil((QAtom *)malloc(sizeof(QAtom)));
 }
 
 /*****************************************************************************
  */
-QExpr *QExprFree(QExpr *qe) {
-	if (qe) {
-		free(qe);
+QAtom *QAtomFree(QAtom *atom) {
+	if (atom) {
+		free(atom);
 	}
-
 	return 0;
 }
 
 /*****************************************************************************
  */
-int QExprAsInteger(QExpr *qe) {
-	return (qe && qe->type == QE_TYPE_ATOM_INTEGER) ? qe->data.integer : 0;
+int QAtomAsInteger(QAtom *atom) {
+	return QAtomIsInteger(atom) ? atom->data.integer : 0;
 }
 
 /*****************************************************************************
  */
-const char *QExprAsString(QExpr *qe) {
-	return (qe && qe->type == QE_TYPE_ATOM_STRING) ? qe->data.string : 0;
+const char *QAtomAsString(QAtom *atom) {
+	return QAtomIsString(atom) ? atom->data.string : 0;
 }
 
 /*****************************************************************************
  */
-int QExprIsAtom(QExpr *qe) {
-	return (qe && ((qe->type & QE_TYPE_ATOM) == QE_TYPE_ATOM)) ? 1 : 0;
+const unsigned char *QAtomAsUString(QAtom *atom) {
+	return QAtomIsUString(atom) ? atom->data.ustring : 0;
 }
 
 /*****************************************************************************
  */
-int QExprIsAtomNil(QExpr *qe) {
-	return (qe && (qe->type == QE_TYPE_ATOM_NIL)) ? 1 : 0;
+int QAtomIsInteger(QAtom *atom) {
+	return atom && atom->type == QE_TYPE_ATOM_INTEGER;
 }
 
 /*****************************************************************************
  */
-int QExprIsInteger(QExpr *qe) {
-	return (qe && (qe->type == QE_TYPE_ATOM_INTEGER)) ? 1 : 0;
+int QAtomIsNil(QAtom *atom) {
+	return atom && atom->type == QE_TYPE_ATOM_NIL;
 }
 
 /*****************************************************************************
  */
-int QExprIsNil(QExpr *qe) {
-	return (qe && (qe->type == QE_TYPE_ATOM_NIL || qe->type == QE_TYPE_LIST_NIL)) ? 1 : 0;
+int QAtomIsString(QAtom *atom) {
+	return atom && atom->type == QE_TYPE_ATOM_STRING;
 }
 
 /*****************************************************************************
  */
-int QExprIsString(QExpr *qe) {
-	return (qe && (qe->type == QE_TYPE_ATOM_STRING)) ? 1 : 0;
+int QAtomIsUString(QAtom *atom) {
+	return atom && atom->type == QE_TYPE_ATOM_USTRING;
 }
 
 /*****************************************************************************
  */
-void QExprSetAtomInteger(QExpr *qe, int i) {
-	if (qe) {
-		qe->type = QE_TYPE_ATOM_INTEGER;
-		qe->data.integer = i;
+QAtom *QAtomSetInteger(QAtom *atom, int integer) {
+	if (atom) {
+		atom->type         = QE_TYPE_ATOM_INTEGER;
+		atom->data.integer = integer;
 	}
+	return atom;
 }
 
 /*****************************************************************************
  */
-void QExprSetAtomString(QExpr *qe, const char *s) {
-	if (qe) {
-		qe->type = QE_TYPE_ATOM_STRING;
-		qe->data.string = s;
+QAtom *QAtomSetNil(QAtom *atom) {
+	if (atom) {
+		atom->type     = QE_TYPE_ATOM_NIL;
+		atom->data.vob = 0;
 	}
+	return atom;
 }
-#endif
+
+/*****************************************************************************
+ */
+QAtom *QAtomSetString(QAtom *atom, const char *string) {
+	if (atom) {
+		atom->type        = QE_TYPE_ATOM_STRING;
+		atom->data.string = string;
+	}
+	return atom;
+}
+
+/*****************************************************************************
+ */
+QAtom *QAtomSetUString(QAtom *atom, const unsigned char *ustring) {
+	if (atom) {
+		atom->type         = QE_TYPE_ATOM_USTRING;
+		atom->data.ustring = ustring;
+	}
+	return atom;
+}
