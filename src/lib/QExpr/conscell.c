@@ -25,14 +25,14 @@
 
 /*****************************************************************************
  */
-QCell *QConsCellCar(QConsCell *qcc) {
-	return qcc ? qcc->car : 0;
+QPointer *QConsCellCar(QConsCell *qcc) {
+	return qcc ? qcc->left : 0;
 }
 
 /*****************************************************************************
  */
-QCell *QConsCellCdr(QConsCell *qcc) {
-	return qcc ? qcc->cdr : 0;
+QPointer *QConsCellCdr(QConsCell *qcc) {
+	return qcc ? qcc->right : 0;
 }
 
 /*****************************************************************************
@@ -47,11 +47,11 @@ QConsCell *QConsCellFree(QConsCell *qcc) {
 
 /*****************************************************************************
  */
-QConsCell *QConsCellNew(QCell *car, QCell *cdr) {
+QConsCell *QConsCellNew(QPointer *left, QPointer *right) {
 	QConsCell *qcc = (QConsCell *)malloc(sizeof(QConsCell));
 	if (qcc) {
-		qcc->car = car;
-		qcc->cdr = cdr;
+		qcc->left  = left;
+		qcc->right = right;
 	}
 
 	return qcc;

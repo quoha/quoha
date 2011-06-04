@@ -26,17 +26,28 @@
 
 /*****************************************************************************
  */
+struct QPointer {
+	int                       type;
+	union {
+		struct QCell     *cell;
+		struct QConsCell *cons;
+	} data;
+};
+typedef struct QPointer QPointer;
+
+/*****************************************************************************
+ */
 struct QConsCell {
-	QCell *car;
-	QCell *cdr;
+	QPointer *left;
+	QPointer *right;
 };
 typedef struct QConsCell QConsCell;
 
 /*****************************************************************************
  */
-QConsCell *QConsCellNew(QCell *car, QCell *cdr);
+QConsCell *QConsCellNew(QPointer *car, QPointer *cdr);
 QConsCell *QConsCellFree(QConsCell *qcc);
-QCell     *QConsCellCar(QConsCell *qcc);
-QCell     *QConsCellCdr(QConsCell *qcc);
+QPointer  *QConsCellLeft(QConsCell *qcc);
+QPointer  *QConsCellRight(QConsCell *qcc);
 
 #endif

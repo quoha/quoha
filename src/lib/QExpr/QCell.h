@@ -25,7 +25,7 @@
 /*****************************************************************************
  */
 struct QCell {
-	int type;
+	int                 type;
 	union {
 		int         integer;
 		const char *string;
