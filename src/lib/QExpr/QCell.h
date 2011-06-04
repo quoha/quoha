@@ -22,6 +22,7 @@
 #ifndef Quoha_src_lib_QExpr_QCell_H
 #define Quoha_src_lib_QExpr_QCell_H
 
+#if 0
 /*****************************************************************************
  */
 struct QCell {
@@ -44,5 +45,7 @@ const char *QCellAsString(QCell *qc);
 int         QCellIsInteger(QCell *qc);
 int         QCellIsNil(QCell *qc);
 int         QCellIsString(QCell *qc);
+
+#endif
 
 #endif

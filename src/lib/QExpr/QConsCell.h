@@ -22,32 +22,45 @@
 #ifndef Quoha_src_lib_QExpr_QConsCell_H
 #define Quoha_src_lib_QExpr_QConsCell_H
 
-#include "QCell.h"
+//#include "QCell.h"
 
 /*****************************************************************************
  */
-struct QPointer {
-	int                       type;
+struct QAtom {
+	int type;
 	union {
-		struct QCell     *cell;
-		struct QConsCell *cons;
+		int                  integer;
+		double               number;
+		const char          *string;
+		const unsigned char *ustring;
 	} data;
 };
-typedef struct QPointer QPointer;
+typedef struct QAtom QAtom;
 
 /*****************************************************************************
  */
-struct QConsCell {
-	QPointer *left;
-	QPointer *right;
+struct QCell {
+	int                   type;
+	union {
+		struct QAtom *atom;
+		struct QCons *cons;
+	} data;
+};
+typedef struct QCell QCell;
+
+/*****************************************************************************
+ */
+struct QCons {
+	QCell left;
+	QCell right;
 };
 typedef struct QConsCell QConsCell;
 
 /*****************************************************************************
  */
-QConsCell *QConsCellNew(QPointer *car, QPointer *cdr);
+QConsCell *QConsCellNew(QCell *left, QCell *right);
 QConsCell *QConsCellFree(QConsCell *qcc);
-QPointer  *QConsCellLeft(QConsCell *qcc);
-QPointer  *QConsCellRight(QConsCell *qcc);
+QCell     *QConsCellLeft(QConsCell *qcc);
+QCell     *QConsCellRight(QConsCell *qcc);
 
 #endif
