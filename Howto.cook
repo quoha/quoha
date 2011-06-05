@@ -39,7 +39,7 @@ function print [qProject] - [qName] - [qVersion];
 /*****************************************************************************
  * local programs and libraries. override any default names here!
  */
-lst_check        = qexpr quohaparser;
+lst_check        = qexpr quohaparser qtoken;
 lst_library      = CuTest QExpr QuohaParser;
 lst_program      = quoha;
 
@@ -47,6 +47,8 @@ tests/qexpr_fld = -Llib -lQExpr;
 tests/qexpr_ldep = lib/libQExpr.a;
 tests/quohaparser_fld = -Llib -lQuohaParser;
 tests/quohaparser_ldep = lib/libQuohaParser.a;
+tests/qtoken_fld  = -Llib -lQExpr;
+tests/qtoken_ldep = lib/libQExpr.a;
 
 /*****************************************************************************
  * external libraries
