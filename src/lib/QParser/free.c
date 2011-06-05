@@ -21,7 +21,7 @@
 
 #include "local.h"
 
-QuohaParser *QuohaParserFree(QuohaParser *qp) {
+QParser *QParserFree(QParser *qp) {
 	if (qp) {
 		free(qp);
 	}

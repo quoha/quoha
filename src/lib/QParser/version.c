@@ -23,30 +23,30 @@
 
 /*****************************************************************************
  */
-int QuohaParserVersionMajor(QuohaParser *qp) {
+int QParserVersionMajor(QParser *qp) {
 	return qp ? qp->version.major : QUOHAPARSER_VER_MAJOR;
 }
 
 /*****************************************************************************
  */
-int QuohaParserVersionMinor(QuohaParser *qp) {
+int QParserVersionMinor(QParser *qp) {
 	return qp ? qp->version.minor : QUOHAPARSER_VER_MINOR;
 }
 
 /*****************************************************************************
  */
-int QuohaParserVersionPatch(QuohaParser *qp) {
+int QParserVersionPatch(QParser *qp) {
 	return qp ? qp->version.patch : QUOHAPARSER_VER_PATCH;
 }
 
 /*****************************************************************************
  */
-const char *QuohaParserVersionName(QuohaParser *qp) {
+const char *QParserVersionName(QParser *qp) {
 	return qp ? qp->version.name : QUOHAPARSER_VER_NAME;
 }
 
 /*****************************************************************************
  */
-const char *QuohaParserVersionTag(QuohaParser *qp) {
+const char *QParserVersionTag(QParser *qp) {
 	return qp ? qp->version.tag : QUOHAPARSER_VER_TAG;
 }

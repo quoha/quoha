@@ -19,8 +19,8 @@
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  ****************************************************************************/
 
-#ifndef Quoha_src_lib_quohaparser_QuohaParser_H
-#define Quoha_src_lib_quohaparser_QuohaParser_H
+#ifndef Quoha_src_lib_QParser_QParser_H
+#define Quoha_src_lib_QParser_QParser_H
 
 #define QUOHAPARSER_VER_MAJOR 0
 #define QUOHAPARSER_VER_MINOR 1
@@ -30,7 +30,7 @@
 
 /*****************************************************************************
  */
-struct QuohaParser {
+struct QParser {
   struct {
     int major;
     int minor;
@@ -39,19 +39,19 @@ struct QuohaParser {
     const char *tag;
   } version;
 };
-typedef struct QuohaParser QuohaParser;
+typedef struct QParser QParser;
 
 /*****************************************************************************
  */
-QuohaParser *QuohaParserNew(void);
-QuohaParser *QuohaParserFree(QuohaParser *qp);
+QParser *QParserNew(void);
+QParser *QParserFree(QParser *qp);
 
 /*****************************************************************************
  */
-const char  *QuohaParserVersionName(QuohaParser *qp);
-const char  *QuohaParserVersionTag(QuohaParser *qp);
-int          QuohaParserVersionMajor(QuohaParser *qp);
-int          QuohaParserVersionMinor(QuohaParser *qp);
-int          QuohaParserVersionPatch(QuohaParser *qp);
+const char  *QParserVersionName(QParser *qp);
+const char  *QParserVersionTag(QParser *qp);
+int          QParserVersionMajor(QParser *qp);
+int          QParserVersionMinor(QParser *qp);
+int          QParserVersionPatch(QParser *qp);
 
 #endif

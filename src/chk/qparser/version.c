@@ -23,64 +23,64 @@
 
 /*****************************************************************************
  */
-static void TestQuohaParserMajor(CuTest* tc) {
-	QuohaParser *qp = QuohaParserNew();
+static void TestQParserMajor(CuTest* tc) {
+	QParser *qp = QParserNew();
         CuAssertTrue(tc, qp != 0);
-        CuAssertTrue(tc, QuohaParserVersionMajor(qp) == QUOHAPARSER_VER_MAJOR);
-	qp = QuohaParserFree(qp);
+        CuAssertTrue(tc, QParserVersionMajor(qp) == QUOHAPARSER_VER_MAJOR);
+	qp = QParserFree(qp);
 }
 
 /*****************************************************************************
  */
-static void TestQuohaParserMinor(CuTest* tc) {
-	QuohaParser *qp = QuohaParserNew();
+static void TestQParserMinor(CuTest* tc) {
+	QParser *qp = QParserNew();
         CuAssertTrue(tc, qp != 0);
-        CuAssertTrue(tc, QuohaParserVersionMinor(qp) == QUOHAPARSER_VER_MINOR);
-	qp = QuohaParserFree(qp);
+        CuAssertTrue(tc, QParserVersionMinor(qp) == QUOHAPARSER_VER_MINOR);
+	qp = QParserFree(qp);
 }
 
 /*****************************************************************************
  */
-static void TestQuohaParserPatch(CuTest* tc) {
-	QuohaParser *qp = QuohaParserNew();
+static void TestQParserPatch(CuTest* tc) {
+	QParser *qp = QParserNew();
         CuAssertTrue(tc, qp != 0);
-        CuAssertTrue(tc, QuohaParserVersionPatch(qp) == QUOHAPARSER_VER_PATCH);
-	qp = QuohaParserFree(qp);
+        CuAssertTrue(tc, QParserVersionPatch(qp) == QUOHAPARSER_VER_PATCH);
+	qp = QParserFree(qp);
 }
 
 /*****************************************************************************
  */
-static void TestQuohaParserName(CuTest* tc) {
-	QuohaParser *qp = QuohaParserNew();
+static void TestQParserName(CuTest* tc) {
+	QParser *qp = QParserNew();
         CuAssertTrue(tc, qp != 0);
-        CuAssertTrue(tc, QuohaParserVersionName(qp) != 0);
+        CuAssertTrue(tc, QParserVersionName(qp) != 0);
 
 	char buffer[128];
-	sprintf(buffer, "%02d.%03d.%04d", QuohaParserVersionMajor(qp), QuohaParserVersionMinor(qp), QuohaParserVersionPatch(qp));
-        CuAssertTrue(tc, strcmp(buffer, QuohaParserVersionName(qp)) == 0);
+	sprintf(buffer, "%02d.%03d.%04d", QParserVersionMajor(qp), QParserVersionMinor(qp), QParserVersionPatch(qp));
+        CuAssertTrue(tc, strcmp(buffer, QParserVersionName(qp)) == 0);
 
-	qp = QuohaParserFree(qp);
+	qp = QParserFree(qp);
 }
 
 /*****************************************************************************
  */
-static void TestQuohaParserTag(CuTest* tc) {
-	QuohaParser *qp = QuohaParserNew();
+static void TestQParserTag(CuTest* tc) {
+	QParser *qp = QParserNew();
         CuAssertTrue(tc, qp != 0);
-        CuAssertTrue(tc, QuohaParserVersionTag(qp) != 0);
+        CuAssertTrue(tc, QParserVersionTag(qp) != 0);
 
-	qp = QuohaParserFree(qp);
+	qp = QParserFree(qp);
 }
 /*****************************************************************************
  */
 CuSuite *GetSuiteVersion(void) {
 	CuSuite *suite = CuSuiteNew();
 
-        SUITE_ADD_TEST(suite, TestQuohaParserMajor);
-        SUITE_ADD_TEST(suite, TestQuohaParserMinor);
-        SUITE_ADD_TEST(suite, TestQuohaParserPatch);
-        SUITE_ADD_TEST(suite, TestQuohaParserName);
-        SUITE_ADD_TEST(suite, TestQuohaParserTag);
+        SUITE_ADD_TEST(suite, TestQParserMajor);
+        SUITE_ADD_TEST(suite, TestQParserMinor);
+        SUITE_ADD_TEST(suite, TestQParserPatch);
+        SUITE_ADD_TEST(suite, TestQParserName);
+        SUITE_ADD_TEST(suite, TestQParserTag);
 
 	return suite;
 }

@@ -23,18 +23,18 @@
 
 /*****************************************************************************
  */
-static void TestQuohaParserFree(CuTest* tc) {
-	QuohaParser *qp = QuohaParserNew();
+static void TestQParserFree(CuTest* tc) {
+	QParser *qp = QParserNew();
         CuAssertTrue(tc, qp != 0);
 
-	qp = QuohaParserFree(qp);
+	qp = QParserFree(qp);
         CuAssertTrue(tc, qp == 0);
 }
 
 /*****************************************************************************
  */
-static void TestQuohaParserNew(CuTest* tc) {
-	QuohaParser *qp = QuohaParserNew();
+static void TestQParserNew(CuTest* tc) {
+	QParser *qp = QParserNew();
 
         CuAssertTrue(tc, qp != 0);
 }
@@ -44,8 +44,8 @@ static void TestQuohaParserNew(CuTest* tc) {
 CuSuite *GetSuiteInit(void) {
 	CuSuite *suite = CuSuiteNew();
 
-        SUITE_ADD_TEST(suite, TestQuohaParserNew);
-        SUITE_ADD_TEST(suite, TestQuohaParserFree);
+        SUITE_ADD_TEST(suite, TestQParserNew);
+        SUITE_ADD_TEST(suite, TestQParserFree);
 
 	return suite;
 }

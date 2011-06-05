@@ -25,8 +25,8 @@
 
 /*****************************************************************************
  */
-QuohaParser *QuohaParserNew(void) {
-	QuohaParser *qp = (QuohaParser *)malloc(sizeof(QuohaParser));
+QParser *QParserNew(void) {
+	QParser *qp = (QParser *)malloc(sizeof(QParser));
 	if (qp) {
 		qp->version.major = QUOHAPARSER_VER_MAJOR;
 		qp->version.minor = QUOHAPARSER_VER_MINOR;
