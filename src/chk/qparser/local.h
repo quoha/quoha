@@ -19,8 +19,8 @@
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  ****************************************************************************/
 
-#ifndef quoha_src_chk_quohaparser_local_H
-#define quoha_src_chk_quohaparser_local_H
+#ifndef quoha_src_chk_qparser_local_H
+#define quoha_src_chk_qparser_local_H
 
 /*****************************************************************************
  * we use CuTest as our framework
@@ -37,7 +37,7 @@
 /*****************************************************************************
  * bring in the parser
  */
-#include "../../lib/QParser/QuohaParser.h"
+#include "../../lib/QParser/QParser.h"
 
 /*****************************************************************************
  * declare our test suites. every test suite looks like
