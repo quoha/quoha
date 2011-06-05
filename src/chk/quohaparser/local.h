@@ -37,7 +37,7 @@
 /*****************************************************************************
  * bring in the parser
  */
-#include "../../lib/quohaparser/QuohaParser.h"
+#include "../../lib/QParser/QuohaParser.h"
 
 /*****************************************************************************
  * declare our test suites. every test suite looks like
