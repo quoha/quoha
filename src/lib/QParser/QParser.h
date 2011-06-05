@@ -22,15 +22,25 @@
 #ifndef Quoha_src_lib_QParser_QParser_H
 #define Quoha_src_lib_QParser_QParser_H
 
-#define QUOHAPARSER_VER_MAJOR 0
-#define QUOHAPARSER_VER_MINOR 1
-#define QUOHAPARSER_VER_PATCH 0
-#define QUOHAPARSER_VER_NAME  "00.001.0000"
-#define QUOHAPARSER_VER_TAG   "alpha"
+#include "../QToken/QToken.h"
+
+/*****************************************************************************
+ */
+#define QUOHAPARSER_VER_MAJOR  0
+#define QUOHAPARSER_VER_MINOR  1
+#define QUOHAPARSER_VER_PATCH  0
+#define QUOHAPARSER_VER_NAME   "00.001.0000"
+#define QUOHAPARSER_VER_TAG    "alpha"
+#define QUOHAPARSER_MAX_BUFSZ  (128 * 1024)
 
 /*****************************************************************************
  */
 struct QParser {
+  struct {
+	unsigned char *start;
+	unsigned char *end;
+	unsigned char *next;
+  } data;
   struct {
     int major;
     int minor;
@@ -45,6 +55,14 @@ typedef struct QParser QParser;
  */
 QParser *QParserNew(void);
 QParser *QParserFree(QParser *qp);
+
+/*****************************************************************************
+ */
+int QParserSetBuffer(QParser *qp, unsigned char *buffer, int bufferLength);
+
+/*****************************************************************************
+ */
+QToken *QParserNextToken(QParser *qp);
 
 /*****************************************************************************
  */

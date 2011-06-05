@@ -25,10 +25,10 @@
 /*****************************************************************************
  */
 struct QToken {
-	int         column;
-	int         line;
-	const char *source;
-	const char *token;
+	int            column;
+	int            line;
+	const char    *source;
+	unsigned char *data;
 };
 typedef struct QToken QToken;
 

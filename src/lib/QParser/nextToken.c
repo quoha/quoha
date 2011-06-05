@@ -19,32 +19,41 @@
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  ****************************************************************************/
 
-#ifndef quoha_src_chk_qparser_local_H
-#define quoha_src_chk_qparser_local_H
+#include "local.h"
 
-/*****************************************************************************
- * we use CuTest as our framework
- */
-#include <CuTest.h>
-
-/*****************************************************************************
- * standard libraries
- */
-#include <stdio.h>
 #include <string.h>
 #include <stdlib.h>
 
 /*****************************************************************************
- * bring in the parser
  */
-#include "../../lib/QParser/QParser.h"
+QToken *QParserNextToken(QParser *qp) {
+	if (qp == 0 || qp->data.next == 0 || qp->data.next == qp->data.end) {
+		return 0;
+	}
 
-/*****************************************************************************
- * declare our test suites. every test suite looks like
- *    CuSuite *GetSuiteXXXX(void);
- */
-CuSuite *GetSuiteFromBuffer();
-CuSuite *GetSuiteInit();
-CuSuite *GetSuiteVersion();
+	static QToken qt;
+	memset(&qt, 0, sizeof(qt));
 
-#endif
+	unsigned char *s = qp->data.next;
+
+	qt.data = s;
+
+	if (*s == '(') {
+		qp->data.next++;
+		return &qt;
+	}
+	if (*s == ')') {
+		qp->data.next++;
+		return &qt;
+	}
+
+	while (s && s < qp->data.end) {
+		if (*s == '(' || *s == ')') {
+			break;
+		}
+		++s;
+	}
+
+	qp->data.next = s;
+	return &qt;
+}

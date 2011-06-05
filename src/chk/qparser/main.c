@@ -32,6 +32,7 @@ main(int argc, char *argv[])
 	/* register the functions in the order that we should run them */
 	CuSuiteAddSuite(suite, GetSuiteInit());
 	CuSuiteAddSuite(suite, GetSuiteVersion());
+	CuSuiteAddSuite(suite, GetSuiteFromBuffer());
 
 	/* run them */
 	CuSuiteRun(suite);
