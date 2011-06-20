@@ -40,7 +40,7 @@ function print [qProject] - [qName] - [qVersion];
  * local programs and libraries. override any default names here!
  */
 lst_check        = qexpr qparser qtoken;
-lst_library      = CuTest QExpr QParser;
+lst_library      = CuTest QBuffer QExpr QParser;
 lst_program      = quoha;
 
 tests/qexpr_fld = -Llib -lQExpr;
