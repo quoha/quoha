@@ -1,7 +1,3 @@
-Research Atom and Cell. Decide how to represent Cells and ConsCells.
-
-Make QExpr use QCell for both atom and list types.
-
 Think about LLVM.
 
 Update the website at http://quoha.org with information on the design.
