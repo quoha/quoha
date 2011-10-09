@@ -29,6 +29,12 @@
 #include <unistd.h>
 
 /*****************************************************************************
+ * QBufferFromFile(fileName, length, forceNewLine)
+ *   creates a new QBuffer from the contents of the file
+ * fileName      name of file to read data from
+ * forceNewLine  if non-zero, ensure that the QBuffer ends on a new-line
+ *
+ * returns pointer to new QBuffer
  */
 QBuffer *QBufferFromFile(const char *fileName, int forceNewLine) {
 	QBuffer    *qb = 0;
@@ -44,6 +50,8 @@ QBuffer *QBufferFromFile(const char *fileName, int forceNewLine) {
 
 			if (qb->length == 0) {
 				// empty file
+
+				// maybe force the buffer to end with a new-line
 				if (!forceNewLine) {
 					qb->startOfData[0] = 0;
 				} else {

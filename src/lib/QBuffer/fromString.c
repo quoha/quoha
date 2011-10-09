@@ -27,9 +27,16 @@
 #include <stdlib.h>
 
 /*****************************************************************************
+ * QBufferFromString(src, length, forceNewLine)
+ *   creates a new QBuffer from the input C-style string
+ * src           pointer to C-style string to create the buffer from
+ * length        length (in bytes) of the source string
+ * forceNewLine  if non-zero, ensure that the QBuffer ends on a new-line
+ *
+ * returns pointer to new QBuffer
  */
 QBuffer *QBufferFromString(const char *src, int length, int forceNewLine) {
-	if (src == 0 || length < 0) {
+	if (!src || length < 0) {
 		length = 0;
 		src    = "";
 	}
@@ -43,7 +50,9 @@ QBuffer *QBufferFromString(const char *src, int length, int forceNewLine) {
 		qb->currData    = qb->data;
 
 		if (qb->length == 0) {
-			// empty file
+			// empty input string
+
+			// maybe force the buffer to end with a new-line
 			if (forceNewLine) {
 				qb->startOfData[0] = '\n';
 				qb->length++;
@@ -52,7 +61,7 @@ QBuffer *QBufferFromString(const char *src, int length, int forceNewLine) {
 
 			qb->startOfData[qb->length] = 0;
 		} else {
-			// not empty, so read it into memory
+			// not empty, so copy the source into our allocated buffer
 			memcpy(qb->data, src, length);
 
 			char *lastChar = qb->endOfData - 1;

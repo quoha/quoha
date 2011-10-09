@@ -27,6 +27,13 @@
 #include <stdlib.h>
 
 /*****************************************************************************
+ * QChunkFromBuffer(qb, chunkStart, chunkEnd)
+ *   splits QBuffer into alternating chunks of code and non-code
+ * qb         buffer to create chunk from
+ * chunkStart text flagging start of a chunk
+ * chunkEnd   text flagging end   of a chunk
+ *
+ * returns pointer to new QChunk
  */
 QChunk *QChunkFromBuffer(QBuffer *qb, const char *chunkStart, const char *chunkEnd) {
 	char *p         = qb->startOfData;
@@ -42,17 +49,15 @@ QChunk *QChunkFromBuffer(QBuffer *qb, const char *chunkStart, const char *chunkE
 			isCode = 1;
 			p += strlen(chunkStart);
 			while (p < endOfData) {
-				if (strncmp(p, chunkEnd, strlen(chunkEnd)) == 0) {
+				if (strncmp(p, chunkEnd, strlen(chunkEnd)) == 0)
 					break;
-				}
 				++p;
 			}
 		} else {
 			isCode = 0;
 			while (p < endOfData) {
-				if (strncmp(p, chunkStart, strlen(chunkStart)) == 0) {
+				if (strncmp(p, chunkStart, strlen(chunkStart)) == 0)
 					break;
-				}
 				++p;
 			}
 		}
@@ -60,9 +65,8 @@ QChunk *QChunkFromBuffer(QBuffer *qb, const char *chunkStart, const char *chunkE
 
 		if (isCode) {
 			startOfChunk += strlen(startOfChunk);
-			if (p < endOfData) {
+			if (p < endOfData)
 				p += strlen(endOfChunk);
-			}
 		}
 
 		QChunk *c = (QChunk *)malloc(sizeof(QChunk) + sizeof(char) * (endOfChunk - startOfChunk));
@@ -71,22 +75,21 @@ QChunk *QChunkFromBuffer(QBuffer *qb, const char *chunkStart, const char *chunkE
 			exit(2);
 		}
 
+		c->prev   = c->next = 0;
 		c->isCode = isCode;
-
-		c->buf = QBufferFromString(startOfChunk, endOfChunk - startOfChunk, 0);
+		c->buf    = QBufferFromString(startOfChunk, endOfChunk - startOfChunk, 0);
 		if (!c->buf) {
 			perror("QChunk.NewBuffer");
 			exit(2);
 		}
 
-		if (head == 0) {
+		if (!head) {
 			head = tail = c;
 		} else {
 			tail->next = c;
 			c->prev = tail;
 			tail = c;
 		}
-		c->next = 0;
 	}
 
 	return head;
