@@ -155,7 +155,7 @@ static void TestQChunk0007(CuTest* tc) {
 	CuAssertTrue(tc, qc->prev   == 0);
 	QChunk *c = qc;
 	for (idx = 0; idx < 11; ++idx) {
-		CuAssertTrue(tc, c);
+		CuAssertTrue(tc, c != 0);
 		CuAssertTrue(tc, c->isCode == (idx % 2));
 		CuAssertTrue(tc, strlen(c->b->data) == 1);
 		CuAssertTrue(tc, c->b->data[0] == ('a' + idx));

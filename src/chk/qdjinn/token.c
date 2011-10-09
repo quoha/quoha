@@ -19,30 +19,23 @@
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  ****************************************************************************/
 
+/*****************************************************************************
+ */
 #include "local.h"
 
 /*****************************************************************************
  */
-int
-main(int argc, char *argv[])
-{
-	/* this is our global suite */
-	CuSuite *suite  = CuSuiteNew();
+static void TestQToken0000(CuTest* tc) {
+	QToken *t = 0;
+	CuAssertTrue(tc, t == 0);
+}
 
-	/* register the functions in the order that we should run them */
-	CuSuiteAddSuite(suite, GetSuiteToken());
+/*****************************************************************************
+ */
+CuSuite *GetSuiteQToken(void) {
+	CuSuite *suite = CuSuiteNew();
 
-	/* run them */
-	CuSuiteRun(suite);
+	SUITE_ADD_TEST(suite, TestQToken0000);
 
-	/* format our output for the log */
-	CuString *output = CuStringNew();
-	CuSuiteSummary(suite, output);
-	CuSuiteDetails(suite, output);
-	printf("%s\n", output->buffer);
-
-	/* there's no public interface to the failCount, so cheat
-	 * and use the value directly
-	 */
-	return suite->failCount == 0 ? 0 : 2;
+	return suite;
 }
