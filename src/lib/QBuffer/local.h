@@ -24,9 +24,4 @@
 
 #include "QBuffer.h"
 
-/*****************************************************************************
- */
-#define QCHKTYPE_TEXT 0x00
-#define QCHKTYPE_CODE 0x01
-
 #endif

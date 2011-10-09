@@ -30,8 +30,8 @@
  */
 QBuffer *QBufferFromString(const char *src, int length, int forceNewLine) {
 	if (src == 0 || length < 0) {
-		src    = "";
 		length = 0;
+		src    = "";
 	}
 
 	QBuffer *qb = (QBuffer *)malloc(sizeof(QBuffer) + length + 5);
@@ -44,14 +44,13 @@ QBuffer *QBufferFromString(const char *src, int length, int forceNewLine) {
 
 		if (qb->length == 0) {
 			// empty file
-			qb->startOfData[0] = 0;
-
 			if (forceNewLine) {
 				qb->startOfData[0] = '\n';
-				qb->startOfData[1] = 0;
 				qb->length++;
 				qb->endOfData++;
 			}
+
+			qb->startOfData[qb->length] = 0;
 		} else {
 			// not empty, so read it into memory
 			memcpy(qb->data, src, length);
