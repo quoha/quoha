@@ -19,17 +19,9 @@
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  ****************************************************************************/
 
-#ifndef Quoha_src_lib_QToken_QToken_H
-#define Quoha_src_lib_QToken_QToken_H
+#ifndef Quoha_src_lib_qdjinn_parser_local_H
+#define Quoha_src_lib_qdjinn_parser_local_H
 
-/*****************************************************************************
- */
-struct QToken {
-	int            column;
-	int            line;
-	const char    *source;
-	unsigned char *data;
-};
-typedef struct QToken QToken;
+#include "../qdjinn.h"
 
 #endif

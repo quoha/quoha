@@ -19,9 +19,9 @@
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  ****************************************************************************/
 
-#ifndef Quoha_src_lib_QBuffer_local_H
-#define Quoha_src_lib_QBuffer_local_H
+#ifndef Quoha_src_lib_qdjinn_buffer_local_H
+#define Quoha_src_lib_qdjinn_buffer_local_H
 
-#include "QBuffer.h"
+#include "../qdjinn.h"
 
 #endif
