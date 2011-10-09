@@ -145,6 +145,29 @@ static void TestQChunk0006(CuTest* tc) {
 
 /*****************************************************************************
  */
+static void TestQChunk0007(CuTest* tc) {
+	int idx;
+	const char *src = "a<b>c<d>e<f>g<h>i<j>k";
+	QBuffer *qb = QBufferFromString(src, strlen(src), 0);
+	CuAssertTrue(tc, qb != 0);
+	QChunk *qc = QChunkFromBuffer(qb, "<", ">");
+	CuAssertTrue(tc, qc         != 0);
+	CuAssertTrue(tc, qc->prev   == 0);
+	QChunk *c = qc;
+	for (idx = 0; idx < 11; ++idx) {
+		CuAssertTrue(tc, c);
+		CuAssertTrue(tc, c->isCode == (idx % 2));
+		CuAssertTrue(tc, strlen(c->b->data) == 1);
+		CuAssertTrue(tc, c->b->data[0] == ('a' + idx));
+		if (c->next)
+			CuAssertTrue(tc, c == c->next->prev);
+		c = c->next;
+	}
+	CuAssertTrue(tc, c == 0);
+}
+
+/*****************************************************************************
+ */
 CuSuite *GetSuiteQChunk(void) {
 	CuSuite *suite = CuSuiteNew();
 
@@ -156,6 +179,7 @@ CuSuite *GetSuiteQChunk(void) {
 	SUITE_ADD_TEST(suite, TestQChunk0004);
 	SUITE_ADD_TEST(suite, TestQChunk0005);
 	SUITE_ADD_TEST(suite, TestQChunk0006);
+	SUITE_ADD_TEST(suite, TestQChunk0007);
 
 	return suite;
 }
