@@ -1,0 +1,36 @@
+QBuffer
+	buffer for all input to be processed
+
+QChunk
+	converts a buffer into a list of chunks
+	chunks alternate between code and text
+	code is to be processed by the engine
+	text is to be ignored
+	the start and stop delimiters for code are parameters
+	the start state is a parameter and is either
+		start in code
+		start in text
+
+QBStack
+	stack of QBuffers to process
+	each item is independent
+	allows for "include" commands
+
+QToken
+	reads an input string and returns the next token
+	token types are
+		numeric
+		text
+	text can be
+		word
+		quoted string
+		escaped string
+
+QParser
+	creates buffers as needed
+	reads a stream of tokens
+	maintains state
+		instruction pointers
+		compiled routines
+		symbol tables
+	either compiles or interprets the commands

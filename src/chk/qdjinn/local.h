@@ -19,17 +19,30 @@
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  ****************************************************************************/
 
-#ifndef Quoha_src_lib_qdjinn_buffer_local_H
-#define Quoha_src_lib_qdjinn_buffer_local_H
+#ifndef quoha_src_chk_qdjinn_local_H
+#define quoha_src_chk_qdjinn_local_H
 
 /*****************************************************************************
+ * we use CuTest as our framework
  */
-#include "../qdjinn.h"
-#include <sys/types.h>
+#include <CuTest.h>
 
 /*****************************************************************************
- * returns zero if able to read file, 1 if error
+ * standard libraries
  */
-int QBufferReadFile(int fd, size_t bytesToRead, unsigned char *buf);
+#include <stdio.h>
+#include <string.h>
+#include <stdlib.h>
+
+/*****************************************************************************
+ * bring in the engine
+ */
+#include "../../lib/qdjinn/qdjinn.h"
+
+/*****************************************************************************
+ * declare our test suites. every test suite looks like
+ *    CuSuite *GetSuiteXXXX(void);
+ */
+CuSuite *GetSuiteQBuffer();
 
 #endif

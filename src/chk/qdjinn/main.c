@@ -19,17 +19,30 @@
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  ****************************************************************************/
 
-#ifndef Quoha_src_lib_qdjinn_buffer_local_H
-#define Quoha_src_lib_qdjinn_buffer_local_H
+#include "local.h"
 
 /*****************************************************************************
  */
-#include "../qdjinn.h"
-#include <sys/types.h>
+int
+main(int argc, char *argv[])
+{
+	/* this is our global suite */
+	CuSuite *suite  = CuSuiteNew();
 
-/*****************************************************************************
- * returns zero if able to read file, 1 if error
- */
-int QBufferReadFile(int fd, size_t bytesToRead, unsigned char *buf);
+	/* register the functions in the order that we should run them */
+	CuSuiteAddSuite(suite, GetSuiteQBuffer());
 
-#endif
+	/* run them */
+	CuSuiteRun(suite);
+
+	/* format our output for the log */
+	CuString *output = CuStringNew();
+	CuSuiteSummary(suite, output);
+	CuSuiteDetails(suite, output);
+	printf("%s\n", output->buffer);
+
+	/* there's no public interface to the failCount, so cheat
+	 * and use the value directly
+	 */
+	return suite->failCount == 0 ? 0 : 2;
+}

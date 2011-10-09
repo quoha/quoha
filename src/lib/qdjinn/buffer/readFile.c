@@ -19,17 +19,31 @@
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  ****************************************************************************/
 
-#ifndef Quoha_src_lib_qdjinn_buffer_local_H
-#define Quoha_src_lib_qdjinn_buffer_local_H
-
 /*****************************************************************************
  */
-#include "../qdjinn.h"
+#include "local.h"
+#include <errno.h>
 #include <sys/types.h>
+#include <fcntl.h>
 
 /*****************************************************************************
- * returns zero if able to read file, 1 if error
+ * return 0 if able to read entire file
+ *        1 if error reading file
  */
-int QBufferReadFile(int fd, size_t bytesToRead, unsigned char *buf);
+int QBufferReadFile(int fd, size_t bytesToRead, unsigned char *buf) {
+	ssize_t totalBytesRead = 0;
+	while (bytesToRead > 0) {
+		ssize_t bytesRead = read(fd, buf, bytesToRead);
+		if (bytesRead == -1 && errno == EINTR) {
+			continue;
+		} else if (bytesRead <= 0) {
+			// assume the worst
+			return 1;
+		}
+		bytesToRead    -= bytesRead;
+		buf            += bytesRead;
+		totalBytesRead += bytesRead;
+	}
 
-#endif
+	return 0;
+}

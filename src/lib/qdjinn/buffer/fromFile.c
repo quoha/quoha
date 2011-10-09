@@ -24,9 +24,12 @@
 #include "local.h"
 #include <stdio.h>
 #include <stdlib.h>
-#include <sys/types.h>
 #include <sys/stat.h>
-#include <unistd.h>
+#include <fcntl.h>
+
+/*****************************************************************************
+ */
+static ssize_t ReadFile(int fd, size_t bytesToRead, unsigned char *buf);
 
 /*****************************************************************************
  * QBufferFromFile(fileName, length, forceNewLine)
@@ -37,50 +40,44 @@
  * returns pointer to new QBuffer
  */
 QBuffer *QBufferFromFile(const char *fileName, int forceNewLine) {
-	QBuffer    *qb = 0;
+	int         fd = -1;
+	QBuffer    *qb =  0;
 	struct stat statBuf;
 
 	if (stat(fileName, &statBuf) == 0) {
+		if (statBuf.st_size > 0) {
+			fd = open(fileName, O_RDONLY);
+			if (fd == -1)  // permissions issue, maybe?
+				return 0;
+		}
+
 		qb = (QBuffer *)malloc(sizeof(QBuffer) + statBuf.st_size + 5);
 		if (qb) {
 			qb->length      = statBuf.st_size;
 			qb->startOfData = qb->data;
-			qb->endOfData   = qb->data + qb->length;
 			qb->currData    = qb->data;
 
 			if (qb->length == 0) {
-				// empty file
-
 				// maybe force the buffer to end with a new-line
-				if (!forceNewLine) {
-					qb->startOfData[0] = 0;
-				} else {
-					qb->startOfData[0] = '\n';
-					qb->startOfData[1] = 0;
-					qb->length++;
-					qb->endOfData++;
-				}
+				if (forceNewLine)
+					qb->data[qb->length++] = '\n';
 			} else {
 				// not empty, so read it into memory
-				FILE *fp = fopen(fileName, "r");
-				if (!fp || fread(qb->data, qb->length, 1, fp) != 1) {
+				int rc = QBufferReadFile(fd, qb->length, qb->data);
+				close(fd);
+				if (rc != 0) {
 					free(qb);
 					return 0;
 				}
-				fclose(fp);
-
-				char *lastChar = qb->endOfData - 1;
 
 				// maybe force the buffer to end with a new-line
-				if (forceNewLine && *lastChar != '\n') {
-					qb->length++;
-					qb->endOfData++;
-					*(lastChar++) = '\n';
-				}
-
-				// no matter what, ensure the buffer is terminated
-				*lastChar = 0;
+				if (forceNewLine && qb->data[qb->length - 1] != '\n')
+					qb->data[qb->length++] = '\n';
 			}
+
+			// no matter what, ensure the buffer is terminated
+			qb->endOfData        = qb->data + qb->length;
+			qb->data[qb->length] = 0;
 		}
 	}
 

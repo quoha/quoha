@@ -46,36 +46,24 @@ QBuffer *QBufferFromString(const char *src, int length, int forceNewLine) {
 	if (qb) {
 		qb->length      = length;
 		qb->startOfData = qb->data;
-		qb->endOfData   = qb->data + qb->length;
 		qb->currData    = qb->data;
 
 		if (qb->length == 0) {
-			// empty input string
-
 			// maybe force the buffer to end with a new-line
-			if (forceNewLine) {
-				qb->startOfData[0] = '\n';
-				qb->length++;
-				qb->endOfData++;
-			}
-
-			qb->startOfData[qb->length] = 0;
+			if (forceNewLine)
+				qb->data[qb->length++] = '\n';
 		} else {
 			// not empty, so copy the source into our allocated buffer
 			memcpy(qb->data, src, length);
 
-			char *lastChar = qb->endOfData - 1;
-
 			// maybe force the buffer to end with a new-line
-			if (forceNewLine && *lastChar != '\n') {
-				qb->length++;
-				qb->endOfData++;
-				*(lastChar++) = '\n';
-			}
-
-			// no matter what, ensure the buffer is terminated
-			*lastChar = 0;
+			if (forceNewLine && qb->data[qb->length - 1] != '\n')
+				qb->data[qb->length++] = '\n';
 		}
+
+		// no matter what, ensure the buffer is terminated
+		qb->endOfData        = qb->data + qb->length;
+		qb->data[qb->length] = 0;
 	}
 
 	return qb;
