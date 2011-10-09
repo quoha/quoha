@@ -35,6 +35,30 @@ struct QBuffer {
 };
 
 /*****************************************************************************
+ */
+QBuffer *QBufferFromFile(const char *fileName, int forceNewLine);
+QBuffer *QBufferFromString(const char *string, int length, int forceNewLine);
+
+/*****************************************************************************
+ * QBuffer stack allows us to push and pop buffers. it is a convenience for
+ * the parser
+ */
+typedef struct QBStack QBStack;
+struct QBStack {
+	int      curr;
+	int      max;
+	QBuffer *st[64[;
+};
+
+/*****************************************************************************
+ */
+QBStack *QBStackNew(void);
+QBStack *QBStackPush(QBuffer *qb);
+QBuffer *QBStackTop(void);
+QBuffer *QBStackPop(void);
+QBStack *QBStackDelete(QBStack *qbs);
+
+/*****************************************************************************
  * QChunks are just handy ways of linking QBuffers together
  */
 typedef struct QChunk QChunk;
@@ -47,8 +71,6 @@ struct QChunk {
 
 /*****************************************************************************
  */
-QBuffer *QBufferFromFile(const char *fileName, int forceNewLine);
-QBuffer *QBufferFromString(const char *string, int length, int forceNewLine);
 QChunk  *QChunkFromBuffer(QBuffer *qb, const char *chunkStart, const char *chunkEnd);
 
 #endif

@@ -36,11 +36,8 @@
 /*****************************************************************************
  */
 struct QParser {
-  struct {
-	unsigned char *start;
-	unsigned char *end;
-	unsigned char *next;
-  } data;
+	QBStack *qs;
+
   struct {
     int major;
     int minor;
@@ -54,6 +51,7 @@ typedef struct QParser QParser;
 /*****************************************************************************
  */
 QParser *QParserNew(void);
+QParser *QParserBuffer(QBuffer *qb);
 QParser *QParserFree(QParser *qp);
 
 /*****************************************************************************
