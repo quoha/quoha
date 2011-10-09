@@ -26,6 +26,7 @@
 /*****************************************************************************
  */
 int QParserSetBuffer(QParser *qp, unsigned char *buffer, int bufferLength) {
+#if 0
 	if (qp == 0) {
 		return -1;
 	} else if (buffer == 0) {
@@ -39,6 +40,6 @@ int QParserSetBuffer(QParser *qp, unsigned char *buffer, int bufferLength) {
 	qp->data.start = buffer;
 	qp->data.end   = buffer + bufferLength;
 	qp->data.next  = buffer;
-
+#endif
 	return 0;
 }

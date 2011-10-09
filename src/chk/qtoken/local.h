@@ -37,7 +37,7 @@
 /*****************************************************************************
  * bring in the library headers
  */
-#include "../../lib/QToken/QToken.h"
+#include "../../lib/qdjinn/qdjinn.h"
 
 /*****************************************************************************
  * declare our test suites. every test suite looks like

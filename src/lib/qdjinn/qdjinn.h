@@ -93,7 +93,7 @@ struct QChunk {
 struct QBStack {
 	int      curr;
 	int      max;
-	QBuffer *st[64[;
+	QBuffer *st[64];
 };
 
 /*****************************************************************************

@@ -37,7 +37,7 @@
 /*****************************************************************************
  * bring in the parser
  */
-#include "../../lib/QParser/QParser.h"
+#include "../../lib/qdjinn/qdjinn.h"
 
 /*****************************************************************************
  * declare our test suites. every test suite looks like

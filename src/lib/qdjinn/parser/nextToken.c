@@ -27,6 +27,8 @@
 /*****************************************************************************
  */
 QToken *QParserNextToken(QParser *qp) {
+	return 0;
+#if 0
 	if (qp == 0 || qp->data.next == 0 || qp->data.next == qp->data.end) {
 		return 0;
 	}
@@ -56,4 +58,5 @@ QToken *QParserNextToken(QParser *qp) {
 
 	qp->data.next = s;
 	return &qt;
+#endif
 }
