@@ -168,6 +168,16 @@ static void TestQBuffer0006b(CuTest* tc) {
 
 /*****************************************************************************
  */
+static void TestQBuffer0007(CuTest* tc) {
+	const char *src    = "testing free";
+	QBuffer *qb = QBufferFromString(src, strlen(src), 0);
+	CuAssertTrue(tc, qb != 0);
+	qb = QBufferFree(qb);
+	CuAssertTrue(tc, qb == 0);
+}
+
+/*****************************************************************************
+ */
 CuSuite *GetSuiteQBuffer(void) {
 	CuSuite *suite = CuSuiteNew();
 
@@ -183,6 +193,7 @@ CuSuite *GetSuiteQBuffer(void) {
 	SUITE_ADD_TEST(suite, TestQBuffer0005b);
 	SUITE_ADD_TEST(suite, TestQBuffer0006a);
 	SUITE_ADD_TEST(suite, TestQBuffer0006b);
+	SUITE_ADD_TEST(suite, TestQBuffer0007);
 
 	return suite;
 }

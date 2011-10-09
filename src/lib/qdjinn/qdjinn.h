@@ -82,8 +82,8 @@ struct QToken {
 struct QChunk {
 	QChunk  *prev;
 	QChunk  *next;
+	QBuffer *b;
 	int      isCode;
-	QBuffer *buf;
 };
 
 /*****************************************************************************
@@ -109,8 +109,14 @@ struct QBuffer {
 
 /*****************************************************************************
  */
+QBuffer *QBufferFromBuffer(QBuffer *qb, const char *chunkEnd, int forceNewLine);
 QBuffer *QBufferFromFile(const char *fileName, int forceNewLine);
 QBuffer *QBufferFromString(const char *string, int length, int forceNewLine);
+QBuffer *QBufferFree(QBuffer *qb);
+
+/*****************************************************************************
+ */
+QChunk  *QChunkFromBuffer(QBuffer *qb, const char *chunkStart, const char *chunkEnd);
 
 /*****************************************************************************
  */
@@ -119,10 +125,6 @@ QBStack *QBStackPush(QBuffer *qb);
 QBuffer *QBStackTop(void);
 QBuffer *QBStackPop(void);
 QBStack *QBStackDelete(QBStack *qbs);
-
-/*****************************************************************************
- */
-QChunk  *QChunkFromBuffer(QBuffer *qb, const char *chunkStart, const char *chunkEnd);
 
 /*****************************************************************************
  */

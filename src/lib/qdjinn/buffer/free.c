@@ -19,31 +19,14 @@
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  ****************************************************************************/
 
-#ifndef quoha_src_chk_qdjinn_local_H
-#define quoha_src_chk_qdjinn_local_H
+/*****************************************************************************
+ */
+#include "local.h"
 
 /*****************************************************************************
- * we use CuTest as our framework
  */
-#include <CuTest.h>
-
-/*****************************************************************************
- * standard libraries
- */
-#include <stdio.h>
-#include <string.h>
-#include <stdlib.h>
-
-/*****************************************************************************
- * bring in the engine
- */
-#include "../../lib/qdjinn/qdjinn.h"
-
-/*****************************************************************************
- * declare our test suites. every test suite looks like
- *    CuSuite *GetSuiteXXXX(void);
- */
-CuSuite *GetSuiteQBuffer();
-CuSuite *GetSuiteQChunk();
-
-#endif
+QBuffer *QBufferFree(QBuffer *qb) {
+	if (qb)
+		free(qb);
+	return 0;
+}

@@ -27,70 +27,40 @@
 #include <stdlib.h>
 
 /*****************************************************************************
- * QChunkFromBuffer(qb, chunkStart, chunkEnd)
- *   splits QBuffer into alternating chunks of code and non-code
- * qb         buffer to create chunk from
- * chunkStart text flagging start of a chunk
- * chunkEnd   text flagging end   of a chunk
+ * QBufferFromBuffer(qb, chunkEnd, forceNewLine)
+ *   splits QBuffer into chunk of text
+ * qb            buffer to create new buffer from
+ * chunkEnd      text flagging end of a chunk
+ * forceNewLine  force buffer to terminate with newline
  *
- * returns pointer to new QChunk
+ * returns pointer to new QBuffer
  */
-QChunk *QChunkFromBuffer(QBuffer *qb, const char *chunkStart, const char *chunkEnd) {
-	char *p         = qb->startOfData;
-	char *endOfData = qb->endOfData;
+QBuffer *QBufferFromBuffer(QBuffer *qb, const char *chunkEnd, int forceNewLine) {
+	QBuffer *t = 0;
 
-	QChunk *head = 0;
-	QChunk *tail = 0;
+	if (qb) {
+		char *startOfChunk = qb->currData;
+		int  len           = (chunkEnd && *chunkEnd) ? strlen(chunkEnd) : 0;
 
-	while (p < endOfData) {
-		int   isCode;
-		char *startOfChunk = p;
-		if (strncmp(p, chunkStart, strlen(chunkStart)) == 0) {
-			isCode = 1;
-			p += strlen(chunkStart);
-			while (p < endOfData) {
-				if (strncmp(p, chunkEnd, strlen(chunkEnd)) == 0)
-					break;
-				++p;
-			}
+		if (!len) {
+			qb->currData = qb->endOfData;
 		} else {
-			isCode = 0;
-			while (p < endOfData) {
-				if (strncmp(p, chunkStart, strlen(chunkStart)) == 0)
+			// go until we run out of buffer or find the chunkEnd
+			//
+			while (qb->currData < qb->endOfData) {
+				if (strncmp(qb->currData, chunkEnd, len) == 0)
 					break;
-				++p;
+				++qb->currData;
 			}
 		}
-		char *endOfChunk = p;
 
-		if (isCode) {
-			startOfChunk += strlen(startOfChunk);
-			if (p < endOfData)
-				p += strlen(endOfChunk);
-		}
+		char *endOfChunk = qb->currData;
 
-		QChunk *c = (QChunk *)malloc(sizeof(QChunk) + sizeof(char) * (endOfChunk - startOfChunk));
-		if (!c) {
-			perror("QChunk.New");
-			exit(2);
-		}
+		if (qb->currData != qb->endOfData)
+			qb->currData += len;
 
-		c->prev   = c->next = 0;
-		c->isCode = isCode;
-		c->buf    = QBufferFromString(startOfChunk, endOfChunk - startOfChunk, 0);
-		if (!c->buf) {
-			perror("QChunk.NewBuffer");
-			exit(2);
-		}
-
-		if (!head) {
-			head = tail = c;
-		} else {
-			tail->next = c;
-			c->prev = tail;
-			tail = c;
-		}
+		t = QBufferFromString(startOfChunk, endOfChunk - startOfChunk, forceNewLine);
 	}
 
-	return head;
+	return t;
 }
