@@ -128,6 +128,10 @@ QBStack *QBStackDelete(QBStack *qbs);
 
 /*****************************************************************************
  */
+QToken *QTokenNext(QBuffer *qb);
+
+/*****************************************************************************
+ */
 QParser *QParserNew(void);
 QParser *QParserBuffer(QBuffer *qb);
 QParser *QParserFree(QParser *qp);
