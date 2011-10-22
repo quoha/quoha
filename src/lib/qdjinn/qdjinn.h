@@ -42,6 +42,10 @@ typedef struct QBuffer QBuffer;
 
 /*****************************************************************************
  */
+QState *QStateNew(void);
+
+/*****************************************************************************
+ */
 struct QState {
 	struct {
 		int         major;
@@ -133,16 +137,19 @@ QToken *QTokenNext(QBuffer *qb);
 /*****************************************************************************
  */
 QParser *QParserNew(void);
-QParser *QParserBuffer(QBuffer *qb);
+QParser *QParserAddBuffer(QParser *qp, QBuffer *qb);
+QParser *QParserAddString(QParser *qp, const char *string, int length);
+QParser *QParserAddFile(QParser *qp, const char *fileName);
+int      QParserParse(QParser *qp);
 QParser *QParserFree(QParser *qp);
 
 /*****************************************************************************
  */
-int QParserSetBuffer(QParser *qp, unsigned char *buffer, int bufferLength);
-
-/*****************************************************************************
- */
-QToken *QParserNextToken(QParser *qp);
+const char  *QStateVersionName(QState *qp);
+const char  *QStateVersionTag(QState *qp);
+int          QStateVersionMajor(QState *qp);
+int          QStateVersionMinor(QState *qp);
+int          QStateVersionPatch(QState *qp);
 
 /*****************************************************************************
  */

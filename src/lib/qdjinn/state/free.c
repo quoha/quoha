@@ -25,22 +25,10 @@
 
 /*****************************************************************************
  */
-#include <stdlib.h>
-
-/*****************************************************************************
- */
-QParser *QParserNew(void) {
-	QParser *qp = (QParser *)malloc(sizeof(QParser));
-	if (qp) {
-		//qp->data.start    = 0;
-		//qp->data.end      = 0;
-		//qp->data.next     = 0;
-		qp->version.major = QUOHAPARSER_VER_MAJOR;
-		qp->version.minor = QUOHAPARSER_VER_MINOR;
-		qp->version.patch = QUOHAPARSER_VER_PATCH;
-		qp->version.name  = QUOHAPARSER_VER_NAME;
-		qp->version.tag   = QUOHAPARSER_VER_TAG;
+QState *QStateFree(QState *qs) {
+	if (qs) {
+		free(qs);
 	}
 
-	return qp;
+	return 0;
 }

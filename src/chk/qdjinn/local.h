@@ -45,6 +45,7 @@
  */
 CuSuite *GetSuiteQBuffer();
 CuSuite *GetSuiteQChunk();
+CuSuite *GetSuiteQState();
 CuSuite *GetSuiteQToken();
 
 #endif

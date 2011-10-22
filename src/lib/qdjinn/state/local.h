@@ -19,28 +19,17 @@
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  ****************************************************************************/
 
-/*****************************************************************************
- */
-#include "local.h"
+#ifndef Quoha_src_lib_qdjinn_engine_local_H
+#define Quoha_src_lib_qdjinn_engine_local_H
+
+#include "../qdjinn.h"
 
 /*****************************************************************************
  */
-#include <stdlib.h>
+#define QUOHAENGINE_VER_MAJOR  0
+#define QUOHAENGINE_VER_MINOR  1
+#define QUOHAENGINE_VER_PATCH  0
+#define QUOHAENGINE_VER_NAME   "00.001.0000"
+#define QUOHAENGINE_VER_TAG    "alpha"
 
-/*****************************************************************************
- */
-QParser *QParserNew(void) {
-	QParser *qp = (QParser *)malloc(sizeof(QParser));
-	if (qp) {
-		//qp->data.start    = 0;
-		//qp->data.end      = 0;
-		//qp->data.next     = 0;
-		qp->version.major = QUOHAPARSER_VER_MAJOR;
-		qp->version.minor = QUOHAPARSER_VER_MINOR;
-		qp->version.patch = QUOHAPARSER_VER_PATCH;
-		qp->version.name  = QUOHAPARSER_VER_NAME;
-		qp->version.tag   = QUOHAPARSER_VER_TAG;
-	}
-
-	return qp;
-}
+#endif

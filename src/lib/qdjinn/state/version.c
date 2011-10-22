@@ -19,28 +19,34 @@
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  ****************************************************************************/
 
-/*****************************************************************************
- */
 #include "local.h"
 
 /*****************************************************************************
  */
-#include <stdlib.h>
+int QStateVersionMajor(QState *qs) {
+	return qs ? qs->version.major : QUOHAENGINE_VER_MAJOR;
+}
 
 /*****************************************************************************
  */
-QParser *QParserNew(void) {
-	QParser *qp = (QParser *)malloc(sizeof(QParser));
-	if (qp) {
-		//qp->data.start    = 0;
-		//qp->data.end      = 0;
-		//qp->data.next     = 0;
-		qp->version.major = QUOHAPARSER_VER_MAJOR;
-		qp->version.minor = QUOHAPARSER_VER_MINOR;
-		qp->version.patch = QUOHAPARSER_VER_PATCH;
-		qp->version.name  = QUOHAPARSER_VER_NAME;
-		qp->version.tag   = QUOHAPARSER_VER_TAG;
-	}
+int QStateVersionMinor(QState *qs) {
+	return qs ? qs->version.minor : QUOHAENGINE_VER_MINOR;
+}
 
-	return qp;
+/*****************************************************************************
+ */
+int QStateVersionPatch(QState *qs) {
+	return qs ? qs->version.patch : QUOHAENGINE_VER_PATCH;
+}
+
+/*****************************************************************************
+ */
+const char *QStateVersionName(QState *qs) {
+	return qs ? qs->version.name : QUOHAENGINE_VER_NAME;
+}
+
+/*****************************************************************************
+ */
+const char *QStateVersionTag(QState *qs) {
+	return qs ? qs->version.tag : QUOHAENGINE_VER_TAG;
 }

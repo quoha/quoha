@@ -1,3 +1,5 @@
+QState
+
 QBuffer
 	buffer for all input to be processed
 

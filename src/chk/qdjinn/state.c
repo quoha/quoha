@@ -19,28 +19,30 @@
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  ****************************************************************************/
 
-/*****************************************************************************
- */
 #include "local.h"
 
 /*****************************************************************************
  */
-#include <stdlib.h>
+static const char *startChunk = "<?quoha ";
+static const char *endChunk   = " ?>";
 
 /*****************************************************************************
  */
-QParser *QParserNew(void) {
-	QParser *qp = (QParser *)malloc(sizeof(QParser));
-	if (qp) {
-		//qp->data.start    = 0;
-		//qp->data.end      = 0;
-		//qp->data.next     = 0;
-		qp->version.major = QUOHAPARSER_VER_MAJOR;
-		qp->version.minor = QUOHAPARSER_VER_MINOR;
-		qp->version.patch = QUOHAPARSER_VER_PATCH;
-		qp->version.name  = QUOHAPARSER_VER_NAME;
-		qp->version.tag   = QUOHAPARSER_VER_TAG;
-	}
+static void TestQState0000(CuTest* tc) {
+	QState *qs = 0;
+	CuAssertTrue(tc, qs == 0);
+	qs = QStateNew();
+	CuAssertTrue(tc, qs != 0);
+	qs = QStateFree(qs);
+	CuAssertTrue(tc, qs == 0);
+}
 
-	return qp;
+/*****************************************************************************
+ */
+CuSuite *GetSuiteQState(void) {
+	CuSuite *suite = CuSuiteNew();
+
+	SUITE_ADD_TEST(suite, TestQState0000);
+
+	return suite;
 }
