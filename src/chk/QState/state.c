@@ -39,10 +39,33 @@ static void TestQState0000(CuTest* tc) {
 
 /*****************************************************************************
  */
+static void TestQState0001(CuTest* tc) {
+	QState *qs = 0;
+	CuAssertTrue(tc, qs == 0);
+	qs = QStateNew();
+	CuAssertTrue(tc, qs != 0);
+
+	CuAssertTrue(tc, QStateVersionMajor(qs) == QStateVersionMajor(0));
+	CuAssertTrue(tc, QStateVersionMinor(qs) == QStateVersionMinor(0));
+	CuAssertTrue(tc, QStateVersionPatch(qs) == QStateVersionPatch(0));
+	CuAssertTrue(tc, QStateVersionName (qs) == QStateVersionName (0));
+	CuAssertTrue(tc, QStateVersionTag  (qs) == QStateVersionTag  (0));
+
+	char buffer[128];
+	sprintf(buffer, "%02d.%03d.%04d", QStateVersionMajor(qs), QStateVersionMinor(qs), QStateVersionPatch(qs));
+	CuAssertTrue(tc, strcmp(buffer, QStateVersionName(qs)) == 0);
+
+	qs = QStateFree(qs);
+	CuAssertTrue(tc, qs == 0);
+}
+
+/*****************************************************************************
+ */
 CuSuite *GetSuiteQState(void) {
 	CuSuite *suite = CuSuiteNew();
 
 	SUITE_ADD_TEST(suite, TestQState0000);
+	SUITE_ADD_TEST(suite, TestQState0001);
 
 	return suite;
 }
