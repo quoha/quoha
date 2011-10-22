@@ -26,14 +26,14 @@
 /*****************************************************************************
  */
 static void TestQBuffer0000(CuTest* tc) {
-	QBuffer *qb = QBufferFromFile("data/qdjinn/buffer/0000.nonExistantFile", 0);
+	QBuffer *qb = QBufferFromFile("data/qdjinn/QBuffer/0000.nonExistantFile", 0);
 	CuAssertTrue(tc, qb == 0);
 }
 
 /*****************************************************************************
  */
 static void TestQBuffer0001a(CuTest* tc) {
-	QBuffer *qb = QBufferFromFile("data/qdjinn/buffer/0001.emptyFile", 0);
+	QBuffer *qb = QBufferFromFile("data/qdjinn/QBuffer/0001.emptyFile", 0);
 	CuAssertTrue(tc, qb != 0);
 	CuAssertTrue(tc, qb->length == 0);
 	CuAssertTrue(tc, qb->data == qb->currData);
@@ -47,7 +47,7 @@ static void TestQBuffer0001a(CuTest* tc) {
 /*****************************************************************************
  */
 static void TestQBuffer0001b(CuTest* tc) {
-	QBuffer *qb = QBufferFromFile("data/qdjinn/buffer/0001.emptyFile", 1);
+	QBuffer *qb = QBufferFromFile("data/qdjinn/QBuffer/0001.emptyFile", 1);
 	CuAssertTrue(tc, qb != 0);
 	CuAssertTrue(tc, qb->length == 1);
 	CuAssertTrue(tc, qb->data == qb->currData);
@@ -62,7 +62,7 @@ static void TestQBuffer0001b(CuTest* tc) {
  */
 static void TestQBuffer0002a(CuTest* tc) {
 	const char *expect = "Hello, World!\n";
-	QBuffer *qb = QBufferFromFile("data/qdjinn/buffer/0002.helloWorld", 0);
+	QBuffer *qb = QBufferFromFile("data/qdjinn/QBuffer/0002.helloWorld", 0);
 	CuAssertTrue(tc, qb != 0);
 	CuAssertTrue(tc, qb->length == 14);
 	CuAssertTrue(tc, qb->data == qb->currData);
@@ -76,7 +76,7 @@ static void TestQBuffer0002a(CuTest* tc) {
  */
 static void TestQBuffer0003a(CuTest* tc) {
 	const char *expect = "line one\nline two";
-	QBuffer *qb = QBufferFromFile("data/qdjinn/buffer/0003.missingNewLine", 0);
+	QBuffer *qb = QBufferFromFile("data/qdjinn/QBuffer/0003.missingNewLine", 0);
 	CuAssertTrue(tc, qb != 0);
 	CuAssertTrue(tc, qb->length == 17);
 	CuAssertTrue(tc, strcmp(qb->startOfData, expect) == 0);
@@ -88,7 +88,7 @@ static void TestQBuffer0003a(CuTest* tc) {
  */
 static void TestQBuffer0003b(CuTest* tc) {
 	const char *expect = "line one\nline two\n";
-	QBuffer *qb = QBufferFromFile("data/qdjinn/buffer/0003.missingNewLine", 1);
+	QBuffer *qb = QBufferFromFile("data/qdjinn/QBuffer/0003.missingNewLine", 1);
 	CuAssertTrue(tc, qb != 0);
 	CuAssertTrue(tc, qb->length == 18);
 	CuAssertTrue(tc, strcmp(qb->startOfData, expect) == 0);
@@ -99,7 +99,7 @@ static void TestQBuffer0003b(CuTest* tc) {
 /*****************************************************************************
  */
 static void TestQBuffer0004a(CuTest* tc) {
-	QBuffer *qb = QBufferFromFile("data/qdjinn/buffer/0004.lotsOfText", 0);
+	QBuffer *qb = QBufferFromFile("data/qdjinn/QBuffer/0004.lotsOfText", 0);
 	CuAssertTrue(tc, qb != 0);
 	CuAssertTrue(tc, qb->length == 3488);
 	CuAssertTrue(tc, qb->data[qb->length] == 0);
@@ -109,7 +109,7 @@ static void TestQBuffer0004a(CuTest* tc) {
 /*****************************************************************************
  */
 static void TestQBuffer0004b(CuTest* tc) {
-	QBuffer *qb = QBufferFromFile("data/qdjinn/buffer/0004.lotsOfText", 1);
+	QBuffer *qb = QBufferFromFile("data/qdjinn/QBuffer/0004.lotsOfText", 1);
 	CuAssertTrue(tc, qb != 0);
 	CuAssertTrue(tc, qb->length == 3488);
 	CuAssertTrue(tc, qb->data[qb->length] == 0);
