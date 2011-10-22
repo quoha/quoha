@@ -39,14 +39,22 @@ function print [qProject] - [qName] - [qVersion];
 /*****************************************************************************
  * local programs and libraries. override any default names here!
  */
-lst_check        = qdjinn qparser;
+lst_check        = QBuffer QChunk QToken QState qdjinn qparser;
 lst_library      = CuTest qdjinn;
 lst_program      = quoha;
 
-tests/qdjinn_fld   = -Llib -lqdjinn;
-tests/qdjinn_ldep  = lib/libqdjinn.a;
-tests/qparser_fld  = -Llib -lqdjinn;
-tests/qparser_ldep = lib/libqdjinn.a;
+tests/QBuffer_fld   = -Llib -lqdjinn;
+tests/QBuffer_ldep  = lib/libqdjinn.a;
+tests/QChunk_fld    = -Llib -lqdjinn;
+tests/QChunk_ldep   = lib/libqdjinn.a;
+tests/QState_fld    = -Llib -lqdjinn;
+tests/QState_ldep   = lib/libqdjinn.a;
+tests/QToken_fld    = -Llib -lqdjinn;
+tests/QToken_ldep   = lib/libqdjinn.a;
+tests/qdjinn_fld    = -Llib -lqdjinn;
+tests/qdjinn_ldep   = lib/libqdjinn.a;
+tests/qparser_fld   = -Llib -lqdjinn;
+tests/qparser_ldep  = lib/libqdjinn.a;
 
 /*****************************************************************************
  * external libraries
