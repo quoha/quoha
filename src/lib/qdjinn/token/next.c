@@ -28,45 +28,97 @@
 #include <ctype.h>
 
 /*****************************************************************************
+ */
+static char *StrNDup(const char *src, int len) {
+	if (!src) {
+		src = "";
+		len = 0;
+	} else if (len < 0) {
+		len = 0;
+	}
+	char *dst = malloc(len + 1);
+	if (dst) {
+		char *p = dst;
+		while (len-- && *src) {
+			if (*src != '\\') {
+				*(p++) = *(src++);
+			} else {
+				switch (*(++src)) {
+					case 0:
+						break;
+					case 'n':
+						*(p++) = '\n';
+						++src;
+						break;
+					case 't':
+						*(p++) = '\t';
+						++src;
+						break;
+					default:
+						*(p++) = *(src++);
+						break;
+				}
+			}
+		}
+		*p = 0;
+	}
+	return dst;
+}
+
+/*****************************************************************************
  * QTokenNext(qb)
  *   returns next token from the buffer
  * qb         buffer to create token from
  *
  * returns pointer to new QToken
  *
- * at this level, tokens are separated by whitespace or end of buffer.
  */
 QToken *QTokenNext(QBuffer *qb) {
 	QToken *qt = 0;
 
 	// skip leading white space
-	if (qb)
-		while (qb->currData < qb->endOfData && isspace(*(qb->currData)))
+	if (qb) {
+		while (qb->currData < qb->endOfData && isspace(*(qb->currData))) {
 			++qb->currData;
+		}
+	}
 
 	if (qb && qb->currData < qb->endOfData) {
-		char *endOfToken;
-		char *startOfToken;
+		char *startOfToken = qb->currData;
 
 		if (*(qb->currData) == '"') {
-			startOfToken = ++qb->currData;
-			while (qb->currData < qb->endOfData && *(qb->currData) != '"')
-				++qb->currData;
-			endOfToken   = qb->currData;
-
-			// skip over the closing quote (if present)
-			if (qb->currData < qb->endOfData)
-				*(qb->currData++) = 0;
+			// double quoted string
+			qb->currData++;
+			while (qb->currData < qb->endOfData && *(qb->currData) != '"') {
+				if (*(qb->currData) == '\\') {
+					qb->currData++;
+				}
+				qb->currData++;
+			}
+			if (qb->currData < qb->endOfData && *(qb->currData) == '"') {
+				qb->currData++;
+			}
 		} else {
 			startOfToken = qb->currData;
-			while (qb->currData < qb->endOfData && !isspace(*(qb->currData)))
-				++qb->currData;
-			endOfToken   = qb->currData;
-
-			// nul terminate the token
-			if (qb->currData < qb->endOfData)
-				*(qb->currData++) = 0;
+			while (qb->currData < qb->endOfData) {
+				if (isspace(*(qb->currData))) {
+					break;
+				} else if (*(qb->currData) == '(' || *(qb->currData) == ')') {
+					break;
+				} else if (*(qb->currData) == '<' || *(qb->currData) == '>') {
+					break;
+				} else if (*(qb->currData) == '"' || *(qb->currData) == '\'') {
+					break;
+				} else if (*(qb->currData) == '\\') {
+					qb->currData++;
+				}
+				if (qb->currData < qb->endOfData) {
+					qb->currData++;
+				}
+			}
 		}
+
+		char *endOfToken = qb->currData; // should be just beyond the token
 
 		qt = (QToken *)malloc(sizeof(QToken));
 		if (!qt) {
@@ -76,7 +128,7 @@ QToken *QTokenNext(QBuffer *qb) {
 		qt->column = 0;
 		qt->line   = 0;
 		qt->source = 0;
-		qt->data   = startOfToken;
+		qt->data   = StrNDup(startOfToken, endOfToken - startOfToken);
 	}
 
 	return qt;

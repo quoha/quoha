@@ -92,7 +92,7 @@ static void TestQToken0003(CuTest* tc) {
 	QToken *qt = QTokenNext(qb);
 	CuAssertTrue(tc, qt != 0);
 	CuAssertTrue(tc, qt->data != 0);
-	CuAssertTrue(tc, strcmp(qt->data, "a") == 0);
+	CuAssertTrue(tc, strcmp(qt->data, "\"a\"") == 0);
 
 	qt = QTokenNext(qb);
 	CuAssertTrue(tc, qt == 0);
@@ -101,7 +101,7 @@ static void TestQToken0003(CuTest* tc) {
 /*****************************************************************************
  */
 static void TestQToken0004(CuTest* tc) {
-	const char *src = "a \"b\" c d \"e f\" g";
+	const char *src = "a \"b\" c d \"e f\" g h\"i\" h\\\"i";
 	QBuffer *qb = QBufferFromString(src, strlen(src), 0);
 	CuAssertTrue(tc, qb != 0);
 
@@ -113,7 +113,7 @@ static void TestQToken0004(CuTest* tc) {
 	qt = QTokenNext(qb);
 	CuAssertTrue(tc, qt != 0);
 	CuAssertTrue(tc, qt->data != 0);
-	CuAssertTrue(tc, strcmp(qt->data, "b") == 0);
+	CuAssertTrue(tc, strcmp(qt->data, "\"b\"") == 0);
 
 	qt = QTokenNext(qb);
 	CuAssertTrue(tc, qt != 0);
@@ -128,12 +128,27 @@ static void TestQToken0004(CuTest* tc) {
 	qt = QTokenNext(qb);
 	CuAssertTrue(tc, qt != 0);
 	CuAssertTrue(tc, qt->data != 0);
-	CuAssertTrue(tc, strcmp(qt->data, "e f") == 0);
+	CuAssertTrue(tc, strcmp(qt->data, "\"e f\"") == 0);
 
 	qt = QTokenNext(qb);
 	CuAssertTrue(tc, qt != 0);
 	CuAssertTrue(tc, qt->data != 0);
 	CuAssertTrue(tc, strcmp(qt->data, "g") == 0);
+
+	qt = QTokenNext(qb);
+	CuAssertTrue(tc, qt != 0);
+	CuAssertTrue(tc, qt->data != 0);
+	CuAssertTrue(tc, strcmp(qt->data, "h") == 0);
+
+	qt = QTokenNext(qb);
+	CuAssertTrue(tc, qt != 0);
+	CuAssertTrue(tc, qt->data != 0);
+	CuAssertTrue(tc, strcmp(qt->data, "\"i\"") == 0);
+
+	qt = QTokenNext(qb);
+	CuAssertTrue(tc, qt != 0);
+	CuAssertTrue(tc, qt->data != 0);
+	CuAssertTrue(tc, strcmp(qt->data, "h\"i") == 0);
 
 	qt = QTokenNext(qb);
 	CuAssertTrue(tc, qt == 0);
