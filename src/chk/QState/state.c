@@ -31,18 +31,28 @@ static const char *endChunk   = " ?>";
 static void TestQState0000(CuTest* tc) {
 	QState *qs = 0;
 	CuAssertTrue(tc, qs == 0);
-	qs = QStateNew();
+
+	CuAssertTrue(tc, QStateStatus(qs) == QDJINN_ERROR);
+	CuAssertTrue(tc, QStateError (qs) == QDJINN_ERROR);
+}
+
+/*****************************************************************************
+ */
+static void TestQState0001(CuTest* tc) {
+	QState *qs = QStateNew();
 	CuAssertTrue(tc, qs != 0);
+
+	CuAssertTrue(tc, QStateStatus(qs) == QDJINN_OK);
+	CuAssertTrue(tc, QStateError(qs)  == QDJINN_OK);
+
 	qs = QStateFree(qs);
 	CuAssertTrue(tc, qs == 0);
 }
 
 /*****************************************************************************
  */
-static void TestQState0001(CuTest* tc) {
-	QState *qs = 0;
-	CuAssertTrue(tc, qs == 0);
-	qs = QStateNew();
+static void TestQState0002(CuTest* tc) {
+	QState *qs = QStateNew();
 	CuAssertTrue(tc, qs != 0);
 
 	CuAssertTrue(tc, QStateVersionMajor(qs) == QStateVersionMajor(0));
@@ -61,11 +71,45 @@ static void TestQState0001(CuTest* tc) {
 
 /*****************************************************************************
  */
+static void TestQState0003(CuTest* tc) {
+	const char *fileName = "data/qdjinn/QState/0003.nonExistantFile";
+
+	QState *qs = QStateNew();
+	CuAssertTrue(tc, qs != 0);
+
+	int rc = QStateLoadFromFile(qs, fileName);
+	CuAssertTrue(tc, rc            == QDJINN_ERROR);
+	CuAssertTrue(tc, qs->lastError == QDJINN_NONEXIST);
+	CuAssertTrue(tc, QStateError(qs) == qs->lastError);
+
+	qs = QStateFree(qs);
+	CuAssertTrue(tc, qs == 0);
+}
+
+/*****************************************************************************
+ */
+static void TestQState0004(CuTest* tc) {
+	const char *fileName = "data/qdjinn/QState/0004.dump";
+	QState *qs = QStateNew();
+	CuAssertTrue(tc, qs != 0);
+
+	int rc = QStateLoadFromFile(qs, fileName);
+	CuAssertTrue(tc, rc == QDJINN_OK);
+
+	qs = QStateFree(qs);
+	CuAssertTrue(tc, qs == 0);
+}
+
+/*****************************************************************************
+ */
 CuSuite *GetSuiteQState(void) {
 	CuSuite *suite = CuSuiteNew();
 
 	SUITE_ADD_TEST(suite, TestQState0000);
 	SUITE_ADD_TEST(suite, TestQState0001);
+	SUITE_ADD_TEST(suite, TestQState0002);
+	SUITE_ADD_TEST(suite, TestQState0003);
+	SUITE_ADD_TEST(suite, TestQState0004);
 
 	return suite;
 }

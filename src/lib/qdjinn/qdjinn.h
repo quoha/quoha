@@ -33,6 +33,12 @@
 
 /*****************************************************************************
  */
+#define QDJINN_OK        0
+#define QDJINN_ERROR     1
+#define QDJINN_NONEXIST  2
+
+/*****************************************************************************
+ */
 typedef struct QState  QState;
 typedef struct QParser QParser;
 typedef struct QToken  QToken;
@@ -44,6 +50,9 @@ typedef struct QBuffer QBuffer;
  */
 QState *QStateNew(void);
 QState *QStateFree(QState *qs);
+int     QStateLoadFromFile(QState *qs, const char *fileName);
+int     QStateError(QState *qs);
+int     QStateStatus(QState *qs);
 
 /*****************************************************************************
  */
@@ -55,6 +64,8 @@ struct QState {
 		const char *name;
 		const char *tag;
 	} version;
+	int lastError;
+	int      lastStatus;
 	QParser *qp;
 };
 

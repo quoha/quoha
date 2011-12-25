@@ -25,24 +25,18 @@
 
 /*****************************************************************************
  */
-#include <stdlib.h>
+int QStateLoadFromFile(QState *qs, const char *fileName) {
+	int doForceNewLine = 0;
 
-/*****************************************************************************
- */
-QState *QStateNew(void) {
-	QState *qs = (QState *)malloc(sizeof(QState));
 	if (qs) {
-		qs->version.major = QUOHAENGINE_VER_MAJOR;
-		qs->version.minor = QUOHAENGINE_VER_MINOR;
-		qs->version.patch = QUOHAENGINE_VER_PATCH;
-		qs->version.name  = QUOHAENGINE_VER_NAME;
-		qs->version.tag   = QUOHAENGINE_VER_TAG;
-
-		qs->lastStatus = QDJINN_OK;
-		qs->lastError  = QDJINN_OK;
-
-		qs->qp = QParserNew();
+		QBuffer *qb = QBufferFromFile(fileName, doForceNewLine);
+		if (qb == 0) {
+			qs->lastStatus = QDJINN_ERROR;
+			qs->lastError  = QDJINN_NONEXIST;
+		} else {
+			qs->lastStatus = QDJINN_OK;
+		}
 	}
 
-	return qs;
+	return qs ? qs->lastStatus : QDJINN_ERROR;
 }

@@ -25,24 +25,6 @@
 
 /*****************************************************************************
  */
-#include <stdlib.h>
-
-/*****************************************************************************
- */
-QState *QStateNew(void) {
-	QState *qs = (QState *)malloc(sizeof(QState));
-	if (qs) {
-		qs->version.major = QUOHAENGINE_VER_MAJOR;
-		qs->version.minor = QUOHAENGINE_VER_MINOR;
-		qs->version.patch = QUOHAENGINE_VER_PATCH;
-		qs->version.name  = QUOHAENGINE_VER_NAME;
-		qs->version.tag   = QUOHAENGINE_VER_TAG;
-
-		qs->lastStatus = QDJINN_OK;
-		qs->lastError  = QDJINN_OK;
-
-		qs->qp = QParserNew();
-	}
-
-	return qs;
+int QStateStatus(QState *qs) {
+	return qs ? qs->lastStatus : QDJINN_ERROR;
 }
