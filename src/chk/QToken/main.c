@@ -25,9 +25,18 @@
 
 /*****************************************************************************
  */
-int
-main(int argc, char *argv[])
-{
+int main(int argc, char *argv[]) {
+	int idx;
+	for (idx = 1; idx < argc; ++idx) {
+		if (strcmp(argv[idx], "--env-file-name") == 0) {
+			printf("envDefault");
+			return 0;
+		} else {
+			printf("error:\tinvalid option '%s'\n", argv[idx]);
+			return 2;
+		}
+	}
+
 	/* this is our global suite */
 	CuSuite *suite  = CuSuiteNew();
 

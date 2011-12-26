@@ -1,5 +1,5 @@
 #!/bin/bash
-##############################################################################
+##########################################################################
 ##  Quoha - a quaint framework for static websites
 ##
 ##  Copyright (C) 2011 Michael D Henderson
@@ -18,21 +18,16 @@
 ##
 ##  You should have received a copy of the GNU General Public License
 ##  along with this program.  If not, see <http://www.gnu.org/licenses/>.
-##############################################################################
-# delete - wrapper for the rm command that handles missing files better than
-#          either rm or rm -f.
-##############################################################################
+##
+##########################################################################
 
-retVal=0
+d=.
+t=
+[ "${1}" == "-d"       ] && t=d
+[ "${1}" == "-f"       ] && t=f
+[ "${2}" == "--source" ] && d=src
 
-for file in "$@"
-do
-  [ -f "${file}" ] || continue
-  rm "${file}"
-  if [ $? != 0 ]
-  then
-    retVal=2
-  fi
-done
+[ -n "${t}" ] || exit 2
 
-exit ${retVal}
+find $d -type $t | egrep -v '.git|.svn' | sed 's/^\.\///'
+exit $?

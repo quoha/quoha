@@ -19,12 +19,10 @@
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  ****************************************************************************/
 
-/*****************************************************************************
- */
 set tell-position;
 
 /*****************************************************************************
- * set gnu version information
+ * set version information
  */
 qProject  = Quoha;
 qName     = a quaint framework for static websites;
@@ -37,30 +35,46 @@ qVersion  = [qVerMajor].[qVerMinor].[qVerPatch];
 function print [qProject] - [qName] - [qVersion];
 
 /*****************************************************************************
+ * set gnu version information
+ */
+
+/*****************************************************************************
  * local programs and libraries. override any default names here!
  */
-lst_check        = QBuffer QChunk QToken QState qdjinn qparser;
-lst_library      = CuTest qdjinn;
-lst_program      = quoha;
+conan_exe        = bin/conan.cgi;
 
-tests/QBuffer_fld   = -Llib -lqdjinn;
-tests/QBuffer_ldep  = lib/libqdjinn.a;
-tests/QChunk_fld    = -Llib -lqdjinn;
-tests/QChunk_ldep   = lib/libqdjinn.a;
-tests/QState_fld    = -Llib -lqdjinn;
-tests/QState_ldep   = lib/libqdjinn.a;
-tests/QToken_fld    = -Llib -lqdjinn;
-tests/QToken_ldep   = lib/libqdjinn.a;
-tests/qdjinn_fld    = -Llib -lqdjinn;
-tests/qdjinn_ldep   = lib/libqdjinn.a;
-tests/qparser_fld   = -Llib -lqdjinn;
-tests/qparser_ldep  = lib/libqdjinn.a;
+/*****************************************************************************
+ * Package Identification Strings
+ */
+gnuIdentFlags = [catenate -DPKG_VER\= '\'"' [qVersion] '"\'']
+                [catenate -DPKG_IDENT\= "'" '"@(#)' [qProject]-[qVersion] ' " ' '__DATE__ " " __TIME__ " " __FILE__' "'" ]
+                [catenate -DSRC_IDENT\= "'" '"@(#)"__DATE__" "__TIME__" "__FILE__' "'"]
+                ;
+
+/*****************************************************************************
+ * utility paths
+ */
+if [not [defined ar      ]] then ar       = /usr/bin/ar;
+if [not [defined delete  ]] then delete   = bin/DELETE;
+if [not [defined distrib ]] then distrib  = tools/bin/gnu.distrib;
+if [not [defined lemon   ]] then lemon    = vendor/bin/lemon;
+if [not [defined lemonx  ]] then lemonx   = tools/bin/gnu.lemonXlat;
+if [not [defined manifest]] then manifest = bin/MANIFEST;
+if [not [defined ranlib  ]] then ranlib   = /usr/bin/ranlib;
+if [not [defined sstrip  ]] then sstrip   = /usr/bin/strip;
+if [not [defined testsh  ]] then testsh   = tools/bin/gnu.test;
+
+/*****************************************************************************
+ * allow cook to generate the list of sources files that we have
+ */
+MANIFEST_DIRS    = [stripdot [collect [manifest] -d]];
+MANIFEST_FILES   = [stripdot [collect [manifest] -f]];
 
 /*****************************************************************************
  * external libraries
  */
 all_comp    = ;
-all_incl    = -Isrc/lib/CuTest;
+all_incl    = ;
 all_libs    = ;
 
 /*****************************************************************************
@@ -68,126 +82,79 @@ all_libs    = ;
  */
 
 /*****************************************************************************
- * Package Identification Strings
- */
-
-/*****************************************************************************
- * global compiler setup
+ * compiler setup
  */
 cc          = gcc;
-cc_ident    = [catenate -DPKG_VER\= '\'"' [qVersion] '"\'']
-              [catenate -DPKG_IDENT\= "'" '"@(#)' [qProject]-[qVersion] ' " ' '__DATE__ " " __TIME__ " " __FILE__' "'" ]
-              [catenate -DSRC_IDENT\= "'" '"@(#)"__DATE__" "__TIME__" "__FILE__' "'"] ;
 cc_incl     = [all_incl];
 cc_libs     = ;
-cc_flags    = -g [cc_ident] -I/Users/mdhender/local/include;
-cc_static   = /*--static*/ ;
+cc_flags    = [gnuIdentFlags]
+              ;
+cc_static   = /*--static*/
+              ;
 
 /*****************************************************************************
- * utility paths
  */
-ar       = [find_command ar      ];
-delete   = bin/delete;
-ranlib   = [find_command ranlib  ];
-sstrip   = [find_command strip   ];
-testsh   = bin/testsh;
-if [not [ar]              ] then ar       = /bin/false;
-if [not [ranlib]          ] then ranlib   = /bin/false;
-if [not [sstrip]          ] then sstrip   = /bin/false;
+lst_packages     = ;
+lst_unittests    = ;
 
 /*****************************************************************************
- * internal variables - do not alter
+ * auto generate dependencies. assumes that vendor tools are hard coded, so
+ * the will be added exactly as they were created.
  */
 lst_dependencies = ;
-lst_manifest     = [stripdot [collect find src -type f]];
 lst_target       = ;
-
-/*****************************************************************************
- * auto generate dependencies for executables.
- */
-loop local tgtName = [lst_program] {
-  local tgtRoot = bin/[tgtName];
-  if [not [defined [tgtRoot]_exe]] then [tgtRoot]_exe = bin/[tgtName];
-  if [not [defined [tgtRoot]_fcc]] then [tgtRoot]_fcc = ;
-  if [not [defined [tgtRoot]_fld]] then [tgtRoot]_fld = ;
-  if [not [defined [tgtRoot]_dir]] then [tgtRoot]_dir = src/bin/[tgtName]/;
-  if [not [defined [tgtRoot]_src]] then [tgtRoot]_src = [match_mask [[tgtRoot]_dir]%0%.c [lst_manifest]];
-  if [not [defined [tgtRoot]_inc]] then [tgtRoot]_inc = [match_mask [[tgtRoot]_dir]%0%.h [lst_manifest]];
-  if [not [defined [tgtRoot]_yyy]] then [tgtRoot]_yyy = [match_mask [[tgtRoot]_dir]%0%.y [lst_manifest]];
-
-  if [count [[tgtRoot]_yyy]]       then [tgtRoot]_src = [stringset [[tgtRoot]_src] [fromto %0%.y %0%.c [[tgtRoot]_yyy]]];
-
-  [tgtRoot]_obj = [fromto %0%.%1 %0%.o      [[tgtRoot]_src]];
-  [tgtRoot]_dep = [fromto %0%.%1 %0%.%1_dep [[tgtRoot]_src] [[tgtRoot]_inc]];
-
-  if [count [[tgtRoot]_obj]] then {
-    lst_target       += [[tgtRoot]_exe];
-    lst_dependencies += [[tgtRoot]_dep];
-  }
-}
-
-/*****************************************************************************
- * auto generate dependencies for libraries.
- */
-loop local tgtName = [lst_library] {
-  local tgtRoot = lib/[tgtName];
-  if [not [defined [tgtRoot]_lib]] then [tgtRoot]_lib = lib/lib[tgtName].a;
-  if [not [defined [tgtRoot]_dir]] then [tgtRoot]_dir = src/lib/[tgtName]/;
-  if [not [defined [tgtRoot]_src]] then [tgtRoot]_src = [match_mask [[tgtRoot]_dir]%0%.c [lst_manifest]];
-  if [not [defined [tgtRoot]_inc]] then [tgtRoot]_inc = [match_mask [[tgtRoot]_dir]%0%.h [lst_manifest]];
-
-  if [not [defined [tgtRoot]_yyy]] then [tgtRoot]_yyy = [match_mask [[tgtRoot]_dir]%0%.y [lst_manifest]];
-
-  if [count [[tgtRoot]_yyy]]       then [tgtRoot]_src = [stringset [[tgtRoot]_src] [fromto %0%.y %0%.c [[tgtRoot]_yyy]]];
-
-  [tgtRoot]_obj = [fromto %0%.%1 %0%.o      [[tgtRoot]_src]];
-  [tgtRoot]_dep = [fromto %0%.%1 %0%.%1_dep [[tgtRoot]_src] [[tgtRoot]_inc]];
-
-  if [count [[tgtRoot]_obj]] then {
-    lst_target       += [[tgtRoot]_lib];
-    lst_dependencies += [[tgtRoot]_dep];
-  }
-}
-
-/*****************************************************************************
- * auto generate dependencies for tests.
- */
-loop local tgtName = [lst_check] {
-  local tgtRoot = tests/[tgtName];
-  if [not [defined [tgtRoot]_exe]] then [tgtRoot]_exe = tests/[tgtName];
-  if [not [defined [tgtRoot]_fcc]] then [tgtRoot]_fcc = ;
-  if [not [defined [tgtRoot]_fld]] then [tgtRoot]_fld = ;
-  if [not [defined [tgtRoot]_dir]] then [tgtRoot]_dir = src/chk/[tgtName]/;
-  if [not [defined [tgtRoot]_src]] then [tgtRoot]_src = [match_mask [[tgtRoot]_dir]%0%.c [lst_manifest]];
-  if [not [defined [tgtRoot]_inc]] then [tgtRoot]_inc = [match_mask [[tgtRoot]_dir]%0%.h [lst_manifest]];
-  if [not [defined [tgtRoot]_yyy]] then [tgtRoot]_yyy = [match_mask [[tgtRoot]_dir]%0%.y [lst_manifest]];
-
-  if [count [[tgtRoot]_yyy]]       then [tgtRoot]_src = [stringset [[tgtRoot]_src] [fromto %0%.y %0%.c [[tgtRoot]_yyy]]];
-
-  [tgtRoot]_obj = [fromto %0%.%1 %0%.o      [[tgtRoot]_src]];
-  [tgtRoot]_dep = [fromto %0%.%1 %0%.%1_dep [[tgtRoot]_src] [[tgtRoot]_inc]];
-
-  [tgtRoot]_obj = [fromto %0%.%1 %0%.o      [[tgtRoot]_src]];
-  [tgtRoot]_dep = [fromto %0%.%1 %0%.%1_dep [[tgtRoot]_src] [[tgtRoot]_inc]];
-
-  if [count [[tgtRoot]_obj]] then {
-    lst_target       += [[tgtRoot]_exe];
-    lst_dependencies += [[tgtRoot]_dep];
+loop local wrd = [match_mask src/bin/% [MANIFEST_DIRS]]
+                 [match_mask src/chk/% [MANIFEST_DIRS]]
+                 [match_mask src/lib/% [MANIFEST_DIRS]] {
+  local tgt = ;
+  if [match_mask src/bin/% [wrd]] then {
+    tgt            = bin/[fromto %0% % [wrd]];
+    [tgt]_type     = exe;
+  } else if [match_mask src/chk/% [wrd]] then {
+    tgt            = bin/[fromto %0% % [wrd]];
+    [tgt]_ccflags  = -Isrc/lib/CuTest;
+    [tgt]_lddep    = lib/libCuTest.a lib/libqdjinn.a;
+    [tgt]_ldflags  = -Llib -lCuTest -lqdjinn;
+    [tgt]_type     = exe;
+    lst_unittests += [tgt];
+  } else if [match_mask src/lib/% [wrd]] then {
+    tgt            = lib/lib[fromto %0% % [wrd]].a;
+    [tgt]_type     = lib;
   }
 
-/*
-  echo tgtName is [tgtName] set silent;
-  echo tgtRoot is [tgtRoot] set silent;
-  echo [tgtRoot]_exe is [[tgtRoot]_exe] set silent;
-  echo [tgtRoot]_fcc is [[tgtRoot]_fcc] set silent;
-  echo [tgtRoot]_fld is [[tgtRoot]_fld] set silent;
-  echo [tgtRoot]_dir is [[tgtRoot]_dir] set silent;
-  echo [tgtRoot]_src is [[tgtRoot]_src] set silent;
-  echo [tgtRoot]_inc is [[tgtRoot]_inc] set silent;
-  echo [tgtRoot]_obj is [[tgtRoot]_obj] set silent;
-  echo [tgtRoot]_dep is [[tgtRoot]_dep] set silent;
-  echo lst_target is [lst_target] set silent;
-*/
+  if [not [defined [tgt]_ccflags]] then { [tgt]_ccflags =       ; }
+  if [not [defined [tgt]_dir    ]] then { [tgt]_dir     = [wrd]/; }
+  if [not [defined [tgt]_lddep  ]] then { [tgt]_lddep   =       ; }
+  if [not [defined [tgt]_ldflags]] then { [tgt]_ldflags =       ; }
+  if [not [defined [tgt]_tgt    ]] then { [tgt]_tgt     = [tgt] ; }
+
+  if [not [defined [tgt]_src]] then {
+    [tgt]_src = [match_mask [[tgt]_dir]%0%.c   [MANIFEST_FILES]]
+                [match_mask [[tgt]_dir]%0%.cpp [MANIFEST_FILES]];
+  }
+  if [not [defined [tgt]_hdr]] then {
+    [tgt]_hdr = [match_mask [[tgt]_dir]%0%.h   [MANIFEST_FILES]]
+                [match_mask [[tgt]_dir]%0%.hpp [MANIFEST_FILES]];
+  }
+  if [not [defined [tgt]_yyy]] then {
+    [tgt]_yyy = [match_mask [[tgt]_dir]%0%.y   [MANIFEST_FILES]];
+  }
+  if [count [[tgt]_yyy]] then {
+    [tgt]_src = [stringset [[tgt]_src] [fromto %0%.y %0%.cpp [[tgt]_yyy]]];
+  }
+
+  [tgt]_obj = [fromto %0%.%1 %0%.o      [[tgt]_src]];
+  [tgt]_dep = [fromto %0%.%1 %0%.%1_dep [[tgt]_src] [[tgt]_hdr]];
+
+  loop local obj = [[tgt]_obj] {
+    [obj]_ccflags = [[tgt]_ccflags];
+  }
+
+  if [count [[tgt]_obj]] then {
+    lst_target       += [tgt];
+    lst_dependencies += [[tgt]_dep];
+
+  }
 }
 
 /*****************************************************************************
@@ -198,55 +165,85 @@ loop local tgtName = [lst_check] {
 /*****************************************************************************
  * production rules
  */
-all: [lst_target]
-{
-  echo " info: built" [lst_target] set silent;
+all: [lst_target] {
+  echo " info: just built all" set silent;
+}
+
+/*****************************************************************************
+ */
+install: bin/conan.cgi {
+/*
+  cp bin/conan.cgi [getenv HOME]/public_html/cgi-bin/conan.cgi;
+*/
+  /* tools/gnu.install; */
 }
 
 /*****************************************************************************
  * testing rules
  */
-check: [lst_target]
-{
+test: [lst_target] {
+  local cgiWrapper = bin/cgiWrapper;
   function print info -- running all tests;
-  [testsh] [lst_check] set silent;
+
+  loop local ut = [lst_unittests] {
+    [cgiWrapper] --pass -- [ut];
+  }
+
   function print info -- passed all tests;
-}
-test: check {
 }
 
 /*****************************************************************************
  * utility rules
  */
-clean:
-{
+clean: {
   clean_list  = Howto.list
-                [match_mask %0%.o      [lst_manifest]]
-                [match_mask %0%~       [lst_manifest]]
-                [match_mask %0core     [lst_manifest]] ;
-  if [count [clean_list]] then [delete] [clean_list] set silent;
+                [match_mask %0%.o      [MANIFEST_FILES]]
+                [match_mask %0%~       [MANIFEST_FILES]]
+                [match_mask %0core     [MANIFEST_FILES]]
+                ;
+  if [count [clean_list]] then
+    [delete] [clean_list] set silent;
 }
 
-clobber: clean
-{
-  clean_list  = [match_mask %0%_dep                  [lst_manifest]]
+clobber: clean {
+  clean_list  = [match_mask %0%_dep    [MANIFEST_FILES]]
                 [lst_target]
-                .c_inclrc ;
+                .c_inclrc
+                ;
 
-  if [count [clean_list]] then [delete] [clean_list] set silent;
+  if [count [clean_list]] then
+    [delete] [clean_list] set silent;
 }
 
-dist-clean: clobber clean
-{
+dist-clean: clobber clean {
   clean_list = ;
 
-  if [count [clean_list]] then [delete] [clean_list] set silent;
+  if [count [clean_list]] then
+    [delete] [clean_list] set silent;
+}
+
+distrib:    dist-clean clobber clean {
+  [distrib] [qProject] [qVer];
 }
 
 /*****************************************************************************
+ * Subversion helpers
  */
-what: /* document our packages */
-{
+commit: {
+  echo " cook: why you wanting me to commit?"    set silent;
+  /bin/false                                     set silent;
+}
+status: {
+  svn status;
+}
+update: {
+  svn update;
+}
+
+/*****************************************************************************
+ * document our packages
+ */
+what: {
   function print [entryname [dir [pathname x]]];
 
   if [not [defined lst_target]] then {
@@ -264,22 +261,22 @@ what: /* document our packages */
   } else if [not [lst_program]] then {
     function print "program: variable defined but empty";
   } else {
-    loop local tgtName = [lst_program] {
-      function print "program:" [tgtName];
-      if [defined [tgtName]_exe] then {
-        function print "_______:" [tgtName]":" target [[tgtName]_exe];
+    loop local prgName = [lst_program] {
+      function print "program:" [prgName];
+      if [defined [prgName]_exe] then {
+        function print "_______:" [prgName]":" target [[prgName]_exe];
       }
-      if [defined [tgtName]_dir] then {
-        function print "_______:" [tgtName]":" dir___ [[tgtName]_dir];
+      if [defined [prgName]_dir] then {
+        function print "_______:" [prgName]":" dir___ [[prgName]_dir];
       }
-      if [defined [tgtName]_src] then {
-        loop local srcName = [[tgtName]_src] {
-          function print "_______:" [tgtName]":" source [srcName];
+      if [defined [prgName]_src] then {
+        loop local srcName = [[prgName]_src] {
+          function print "_______:" [prgName]":" source [srcName];
         }
       }
-      if [defined [tgtName]_inc] then {
-        loop local srcName = [[tgtName]_inc] {
-          function print "_______:" [tgtName]":" header [srcName];
+      if [defined [prgName]_hdr] then {
+        loop local srcName = [[prgName]_hdr] {
+          function print "_______:" [prgName]":" header [srcName];
         }
       }
     }
@@ -290,19 +287,19 @@ what: /* document our packages */
   } else if [not [lst_library]] then {
     function print "library: variable defined but empty";
   } else {
-    loop local tgtName = [lst_library] {
-      function print "library:" [tgtName];
-      if [defined [tgtName]_dir] then {
-        function print "_______:" [tgtName]":" dir___ [[tgtName]_dir];
+    loop local libName = [lst_library] {
+      function print "library:" [libName];
+      if [defined [libName]_dir] then {
+        function print "_______:" [libName]":" dir___ [[libName]_dir];
       }
-      if [defined [tgtName]_src] then {
-        loop local srcName = [[tgtName]_src] {
-          function print "_______:" [tgtName]":" source [srcName];
+      if [defined [libName]_src] then {
+        loop local srcName = [[libName]_src] {
+          function print "_______:" [libName]":" source [srcName];
         }
       }
-      if [defined [tgtName]_inc] then {
-        loop local srcName = [[tgtName]_inc] {
-          function print "_______:" [tgtName]":" header [srcName];
+      if [defined [libName]_hdr] then {
+        loop local srcName = [[libName]_hdr] {
+          function print "_______:" [libName]":" header [srcName];
         }
       }
     }
@@ -311,25 +308,27 @@ what: /* document our packages */
 
 /*****************************************************************************
  */
-function Say-Why =
-{
-  if [count [@1]] then @1 = [@1];
-  if [count [@2]] then @2 = [@2];
+function Say-Why = {
+  if [count [@1]] then
+    @1 = [@1];
+  if [count [@2]] then
+    @2 = [@2];
   local tt = [target];
-  if [defined targets] then tt = [targets];
+  if [defined targets] then
+    tt = [targets];
   if [in [count [younger]] 0 1 2 3] then {
-    function print [@1] [@2] Building [target] because of [younger];
+    function print [@1] [@2]
+      Building [target] because of [younger];
   } else {
-    function print [@1] [@2] Building [target] because of [wordlist 1 3 [younger]] et al;
+    function print [@1] [@2]
+      Building [target] because of [wordlist 1 3 [younger]] et al;
   }
 }
 
 /*****************************************************************************
  * from the sample, create dependency list files for files
  */
-%0%.%1_dep: %0%.%1
-  set no-cascade
-{
+%0%.%1_dep: %0%.%1 set no-cascade {
   /*function Say-Why [__FILE__] [__LINE__];*/
   c_incl --no-cache --no-recurs %0%.%1
     -I[dirname %0%.%1] [cc_incl]
@@ -340,44 +339,49 @@ function Say-Why =
 }
 
 /*****************************************************************************
- * compile C source file in its source directory with the right include path
+ * force a C source file to compile in the correct directory with the right
+ * include files -- assumes that dependency files have been created
  */
-%0%.o: %0%.c
-{
+%0%.o: %0%.c {
   /*function Say-Why [__FILE__] [__LINE__];*/
-  [cc] -I[dirname %0%.c] [cc_incl] [cc_flags] -c %0%.c -o [target];
+  [cc] -I[dirname %0%.c] [cc_incl] [cc_flags] [[target]_ccflags] -c %0%.c -o [target];
+}
+
+/*****************************************************************************
+ * force a C++ source file to compile in the correct directory with the right
+ * include files -- assumes that dependency files have been created
+ */
+%0%.o: %0%.cpp {
+  /*function Say-Why [__FILE__] [__LINE__];*/
+  [cc] -I[dirname %0%.cpp] [cc_incl] [cc_flags] -c %0%.cpp -o [target];
 }
 
 /*****************************************************************************
  * create an executable from object files
  */
-bin/%: [bin/%_obj]
-  set unlink
-{
+vendor/bin/%: [%_obj] set unlink {
   function Say-Why [__FILE__] [__LINE__];
-  [cc] [cc_static] -o [target] [[target]_obj] [[target]_fld] [all_libs];
-  [sstrip] [target];
+  [cc] -o vendor/bin/% [%_obj];
+}
+
+bin/%: [[target]_obj] [[target]_lddep] set unlink {
+/*
+  function Say-Why [__FILE__] [__LINE__];
+  echo binfile [target] [target]_obj.... [[target]_obj]     set silent;
+  echo ....... [target] [target]_ldflags [[target]_ldflags] set silent;
+  echo ....... [target] [target]_lddep.. [[target]_lddep]   set silent;
+*/
+  [cc] [cc_static] -o [target] [[target]_obj] [[target]_ldflags] [all_libs];
+  [sstrip] [target] set silent;
 }
 
 /*****************************************************************************
  * create a library from object files
  */
-lib/lib%.a: [lib/%_obj]
-  set unlink
-{
+lib/lib%.a: [[target]_obj] [[target]_lddep] set unlink {
+/*
   function Say-Why [__FILE__] [__LINE__];
-  [ar]  cq [target] [lib/%_obj] set silent;
+*/
+  [ar]  cq [target] [[target]_obj] set silent;
   [ranlib] [target] set silent;
 }
-
-/*****************************************************************************
- * create a testing executable from object files
- */
-tests/%: [tests/%_obj] : lib/libCuTest.a [tests/%_ldep]
-  set unlink
-{
-  function Say-Why [__FILE__] [__LINE__];
-  [cc] [cc_static] -o [target] [[target]_obj] [[target]_fld] [all_libs] -Llib -lCuTest;
-  [sstrip] [target];
-}
-
