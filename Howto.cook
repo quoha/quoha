@@ -55,11 +55,11 @@ gnuIdentFlags = [catenate -DPKG_VER\= '\'"' [qVersion] '"\'']
  * utility paths
  */
 if [not [defined ar      ]] then ar       = /usr/bin/ar;
-if [not [defined delete  ]] then delete   = bin/DELETE;
+if [not [defined delete  ]] then delete   = bin/delete;
 if [not [defined distrib ]] then distrib  = tools/bin/gnu.distrib;
 if [not [defined lemon   ]] then lemon    = vendor/bin/lemon;
 if [not [defined lemonx  ]] then lemonx   = tools/bin/gnu.lemonXlat;
-if [not [defined manifest]] then manifest = bin/MANIFEST;
+if [not [defined manifest]] then manifest = bin/manifest;
 if [not [defined ranlib  ]] then ranlib   = /usr/bin/ranlib;
 if [not [defined sstrip  ]] then sstrip   = /usr/bin/strip;
 if [not [defined testsh  ]] then testsh   = tools/bin/gnu.test;
