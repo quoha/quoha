@@ -19,32 +19,37 @@
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  ****************************************************************************/
 
-#ifndef quoha_src_chk_qparser_local_H
-#define quoha_src_chk_qparser_local_H
+#include "../local.h"
 
 /*****************************************************************************
- * we use CuTest as our framework
  */
-#include <CuTest.h>
+static void TestQParserFree(CuTest* tc) {
+	QParser *qp = QParserNew();
+        CuAssertTrue(tc, qp != 0);
+
+	//CuAssertTrue(tc, qp->data.start == 0);
+	//CuAssertTrue(tc, qp->data.end == 0);
+	//CuAssertTrue(tc, qp->data.next == 0);
+
+	qp = QParserFree(qp);
+        CuAssertTrue(tc, qp == 0);
+}
 
 /*****************************************************************************
- * standard libraries
  */
-#include <stdio.h>
-#include <string.h>
-#include <stdlib.h>
+static void TestQParserNew(CuTest* tc) {
+	QParser *qp = QParserNew();
+
+        CuAssertTrue(tc, qp != 0);
+}
 
 /*****************************************************************************
- * bring in the parser
  */
-#include "../../lib/qdjinn/qdjinn.h"
+CuSuite *GetSuiteInit(void) {
+	CuSuite *suite = CuSuiteNew();
 
-/*****************************************************************************
- * declare our test suites. every test suite looks like
- *    CuSuite *GetSuiteXXXX(void);
- */
-CuSuite *GetSuiteFromBuffer();
-CuSuite *GetSuiteInit();
-CuSuite *GetSuiteVersion();
+        SUITE_ADD_TEST(suite, TestQParserNew);
+        SUITE_ADD_TEST(suite, TestQParserFree);
 
-#endif
+	return suite;
+}
