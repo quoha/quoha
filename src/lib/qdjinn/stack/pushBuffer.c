@@ -19,30 +19,29 @@
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  ****************************************************************************/
 
-#ifndef quoha_src_chk_QState_local_H
-#define quoha_src_chk_QState_local_H
-
 /*****************************************************************************
- * we use CuTest as our framework
  */
-#include <CuTest.h>
-
-/*****************************************************************************
- * standard libraries
- */
-#include <stdio.h>
-#include <string.h>
+#include "local.h"
 #include <stdlib.h>
 
 /*****************************************************************************
- * bring in the engine
+ * return buffer on top of stack after push
  */
-#include "../../lib/qdjinn/qdjinn.h"
+QBuffer *QBStackPushBuffer(QBStack *qs, QBuffer *qb) {
+	if (qs && qb) {
+		QBStackNode *top = malloc(sizeof(*top));
+		if (top) {
+			top->prev = top->next = 0;
+			top->b = qb;
+		}
+		if (qs->top) {
+			qs->top->next = top;
+			top->prev = qs->top;
+			qs->top = top;
+		} else {
+			qs->bottom = qs->top = top;
+		}
+	}
 
-/*****************************************************************************
- * declare our test suites. every test suite looks like
- *    CuSuite *GetSuiteXXXX(void);
- */
-CuSuite *GetSuiteQState();
-
-#endif
+	return qs && qs->top ? qs->top->b : 0;
+}

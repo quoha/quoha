@@ -23,6 +23,12 @@
 
 /*****************************************************************************
  */
+const char *QParserVersionDttm(QParser *qp) {
+	return __DATE__ " " __TIME__;
+}
+
+/*****************************************************************************
+ */
 int QParserVersionMajor(QParser *qp) {
 	return qp ? qp->version.major : QUOHAPARSER_VER_MAJOR;
 }

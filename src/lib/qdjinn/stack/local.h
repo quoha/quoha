@@ -19,41 +19,9 @@
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  ****************************************************************************/
 
-/*****************************************************************************
- */
-#include "local.h"
+#ifndef Quoha_src_lib_qdjinn_stack_local_H
+#define Quoha_src_lib_qdjinn_stack_local_H
 
-/*****************************************************************************
- */
-int main(int argc, char *argv[]) {
-	int idx;
-	for (idx = 1; idx < argc; ++idx) {
-		if (strcmp(argv[idx], "--env-file-name") == 0) {
-			printf("envDefault");
-			return 0;
-		} else {
-			printf("error:\tinvalid option '%s'\n", argv[idx]);
-			return 2;
-		}
-	}
+#include "../qdjinn.h"
 
-	/* this is our global suite */
-	CuSuite *suite  = CuSuiteNew();
-
-	/* register the functions in the order that we should run them */
-	CuSuiteAddSuite(suite, GetSuiteQToken());
-
-	/* run them */
-	CuSuiteRun(suite);
-
-	/* format our output for the log */
-	CuString *output = CuStringNew();
-	CuSuiteSummary(suite, output);
-	CuSuiteDetails(suite, output);
-	printf("%s\n", output->buffer);
-
-	/* there's no public interface to the failCount, so cheat
-	 * and use the value directly
-	 */
-	return suite->failCount == 0 ? 0 : 2;
-}
+#endif

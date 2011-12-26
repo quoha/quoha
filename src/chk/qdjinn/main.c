@@ -43,6 +43,7 @@ int main(int argc, char *argv[]) {
 	CuSuiteAddSuite(suite, GetSuiteQChunk());
 	CuSuiteAddSuite(suite, GetSuiteQToken());
 	CuSuiteAddSuite(suite, GetSuiteQState());
+	CuSuiteAddSuite(suite, GetSuiteQParserIssue());
 
 	/* run them */
 	CuSuiteRun(suite);

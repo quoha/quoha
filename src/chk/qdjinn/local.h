@@ -45,6 +45,7 @@
  */
 CuSuite *GetSuiteQBuffer();
 CuSuite *GetSuiteQChunk();
+CuSuite *GetSuiteQParserIssue(void);
 CuSuite *GetSuiteQState();
 CuSuite *GetSuiteQToken();
 

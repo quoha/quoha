@@ -24,36 +24,19 @@
 #include "local.h"
 
 /*****************************************************************************
+ * return buffer on top of stack before pop
  */
-int main(int argc, char *argv[]) {
-	int idx;
-	for (idx = 1; idx < argc; ++idx) {
-		if (strcmp(argv[idx], "--env-file-name") == 0) {
-			printf("envDefault");
-			return 0;
+QBuffer *QBStackPopBuffer(QBStack *qbs) {
+	struct QBStackNode *top = qbs ? qbs->top : 0;
+	if (top) {
+		qbs->top = qbs->top->prev;
+		if (qbs->top) {
+			qbs->top->next = 0;
 		} else {
-			printf("error:\tinvalid option '%s'\n", argv[idx]);
-			return 2;
+			qbs->bottom = 0;
 		}
+		// TODO: memory leak - should free t
+		top->prev = top->next = 0;
 	}
-
-	/* this is our global suite */
-	CuSuite *suite  = CuSuiteNew();
-
-	/* register the functions in the order that we should run them */
-	CuSuiteAddSuite(suite, GetSuiteQBuffer());
-
-	/* run them */
-	CuSuiteRun(suite);
-
-	/* format our output for the log */
-	CuString *output = CuStringNew();
-	CuSuiteSummary(suite, output);
-	CuSuiteDetails(suite, output);
-	printf("%s\n", output->buffer);
-
-	/* there's no public interface to the failCount, so cheat
-	 * and use the value directly
-	 */
-	return suite->failCount == 0 ? 0 : 2;
+	return top ? top->b : 0;
 }

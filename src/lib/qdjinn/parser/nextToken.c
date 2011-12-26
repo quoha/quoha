@@ -19,44 +19,36 @@
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  ****************************************************************************/
 
+/*****************************************************************************
+ */
 #include "local.h"
-
-#include <string.h>
-#include <stdlib.h>
 
 /*****************************************************************************
  */
 QToken *QParserNextToken(QParser *qp) {
-	return 0;
-#if 0
-	if (qp == 0 || qp->data.next == 0 || qp->data.next == qp->data.end) {
-		return 0;
-	}
-
-	static QToken qt;
-	memset(&qt, 0, sizeof(qt));
-
-	unsigned char *s = qp->data.next;
-
-	qt.data = s;
-
-	if (*s == '(') {
-		qp->data.next++;
-		return &qt;
-	}
-	if (*s == ')') {
-		qp->data.next++;
-		return &qt;
-	}
-
-	while (s && s < qp->data.end) {
-		if (*s == '(' || *s == ')') {
-			break;
+	QToken *qt = 0;
+	if (qp) {
+		// get a token out of the active buffer. if that buffer is empty, roll
+		// over to the next. continue to do that until we are out of buffers or
+		// we get a token.
+		QBuffer *qb = QBStackTopBuffer(qp->qs);
+		for (; qt == 0; qb = QBStackTopBuffer(qp->qs)) {
+			if (qb->currData >= qb->endOfData) {
+				// exhausted buffer so get the next off the stack
+				QBStackPopBuffer(qp->qs);
+			} else {
+				qt = QTokenNext(qb);
+				if (!qt) {
+					// no token? why?
+					if (qb->currData < qb->endOfData) {
+						// out of memory?
+						break;
+					}
+					// otherwise, check the next buffer
+				}
+			}
 		}
-		++s;
 	}
 
-	qp->data.next = s;
-	return &qt;
-#endif
+	return qt;
 }

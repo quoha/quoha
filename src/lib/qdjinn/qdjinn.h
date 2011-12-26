@@ -39,12 +39,14 @@
 
 /*****************************************************************************
  */
-typedef struct QState  QState;
-typedef struct QParser QParser;
-typedef struct QToken  QToken;
-typedef struct QChunk  QChunk;
-typedef struct QBStack QBStack;
-typedef struct QBuffer QBuffer;
+typedef struct QState      QState;
+typedef struct QParser     QParser;
+typedef struct QToken      QToken;
+typedef struct QChunk      QChunk;
+typedef struct QBStack     QBStack;
+typedef struct QBStackNode QBStackNode;
+typedef struct QBuffer     QBuffer;
+
 
 /*****************************************************************************
  */
@@ -106,10 +108,14 @@ struct QChunk {
  * QBStack allows us to push and pop buffers. it is a convenience for
  * the parser
  */
+struct QBStackNode {
+	QBStackNode *prev;
+	QBStackNode *next;
+	QBuffer     *b;
+};
 struct QBStack {
-	int      curr;
-	int      max;
-	QBuffer *st[64];
+	QBStackNode *bottom;
+	QBStackNode *top;
 };
 
 /*****************************************************************************
@@ -149,11 +155,12 @@ QToken *QTokenNext(QBuffer *qb);
 /*****************************************************************************
  */
 QParser *QParserNew(void);
+QParser *QParserFree(QParser *qp);
 QParser *QParserAddBuffer(QParser *qp, QBuffer *qb);
 QParser *QParserAddString(QParser *qp, const char *string, int length);
 QParser *QParserAddFile(QParser *qp, const char *fileName);
+QToken  *QParserLookahead(QParser *qp);
 int      QParserParse(QParser *qp);
-QParser *QParserFree(QParser *qp);
 
 /*****************************************************************************
  */
@@ -170,6 +177,12 @@ const char  *QParserVersionTag(QParser *qp);
 int          QParserVersionMajor(QParser *qp);
 int          QParserVersionMinor(QParser *qp);
 int          QParserVersionPatch(QParser *qp);
+const char  *QParserVersionDttm(QParser *qp);
 
+/*****************************************************************************
+ */
+QBuffer *QBStackPopBuffer(QBStack *qbs);
+QBuffer *QBStackPushBuffer(QBStack *qs, QBuffer *qb);
+QBuffer *QBStackTopBuffer(QBStack *qs);
 
 #endif

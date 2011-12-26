@@ -76,10 +76,10 @@ static char *StrNDup(const char *src, int len) {
 QToken *QTokenNext(QBuffer *qb) {
 	QToken *qt = 0;
 
-	// skip leading white space
 	if (qb) {
+		// skip leading white space
 		while (qb->currData < qb->endOfData && isspace(*(qb->currData))) {
-			++qb->currData;
+			qb->currData++;
 		}
 	}
 
@@ -99,9 +99,10 @@ QToken *QTokenNext(QBuffer *qb) {
 				qb->currData++;
 			}
 		} else {
-			startOfToken = qb->currData;
 			while (qb->currData < qb->endOfData) {
-				if (isspace(*(qb->currData))) {
+				if (*(qb->currData) == '\\') {
+					qb->currData++;
+				} else if (isspace(*(qb->currData))) {
 					break;
 				} else if (*(qb->currData) == '(' || *(qb->currData) == ')') {
 					break;
@@ -109,26 +110,33 @@ QToken *QTokenNext(QBuffer *qb) {
 					break;
 				} else if (*(qb->currData) == '"' || *(qb->currData) == '\'') {
 					break;
-				} else if (*(qb->currData) == '\\') {
-					qb->currData++;
 				}
-				if (qb->currData < qb->endOfData) {
-					qb->currData++;
-				}
+				qb->currData++;
 			}
+		}
+
+		if (qb->currData > qb->endOfData) {
+			qb->currData = qb->endOfData;
 		}
 
 		char *endOfToken = qb->currData; // should be just beyond the token
 
-		qt = (QToken *)malloc(sizeof(QToken));
-		if (!qt) {
-			perror("QToken.New");
-			exit(2);
+		// just to be mean, skip trailing white space
+		while (qb->currData < qb->endOfData && isspace(*(qb->currData))) {
+			qb->currData++;
 		}
-		qt->column = 0;
-		qt->line   = 0;
-		qt->source = 0;
-		qt->data   = StrNDup(startOfToken, endOfToken - startOfToken);
+
+		qt = (QToken *)malloc(sizeof(QToken));
+		if (qt) {
+			qt->column = 0;
+			qt->line   = 0;
+			qt->source = 0;
+			qt->data   = StrNDup(startOfToken, endOfToken - startOfToken);
+			if (!qt->data) {
+				// TODO: leak memory since we don't call free(qt);
+				qt = 0;
+			}
+		}
 	}
 
 	return qt;
