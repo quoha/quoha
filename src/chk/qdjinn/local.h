@@ -44,6 +44,8 @@
  *    CuSuite *GetSuiteXXXX(void);
  */
 CuSuite *GetSuiteQBuffer();
+CuSuite *GetSuiteQBufferFromFile();
+CuSuite *GetSuiteQBufferFromString();
 CuSuite *GetSuiteQBufferIssue();
 CuSuite *GetSuiteQChunk();
 CuSuite *GetSuiteQChunkIssue();
