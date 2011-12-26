@@ -40,10 +40,15 @@ int main(int argc, char *argv[]) {
 
 	/* register the functions in the order that we should run them */
 	CuSuiteAddSuite(suite, GetSuiteQBuffer());
+	CuSuiteAddSuite(suite, GetSuiteQBufferIssue());
 	CuSuiteAddSuite(suite, GetSuiteQChunk());
+	CuSuiteAddSuite(suite, GetSuiteQChunkIssue());
 	CuSuiteAddSuite(suite, GetSuiteQToken());
-	CuSuiteAddSuite(suite, GetSuiteQState());
+	CuSuiteAddSuite(suite, GetSuiteQTokenIssue());
+	CuSuiteAddSuite(suite, GetSuiteQParser());
 	CuSuiteAddSuite(suite, GetSuiteQParserIssue());
+	CuSuiteAddSuite(suite, GetSuiteQState());
+	CuSuiteAddSuite(suite, GetSuiteQStateIssue());
 
 	/* run them */
 	CuSuiteRun(suite);

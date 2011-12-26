@@ -44,14 +44,14 @@ static void TestAtom(CuTest* tc) {
 
 	const char *expectString = "atom";
 
-	QToken *qt = QParserNextToken(qp);
+	QToken *qt = QParserLookahead(qp);
 	CuAssertTrue(tc, qt != 0);
 	CuAssertTrue(tc, qt->data == buffer);
 	CuAssertTrue(tc, strlen(qt->data) == strlen(expectString));
 	CuAssertTrue(tc, strcmp(qt->data, expectString) == 0);
 	//CuAssertTrue(tc, qp->data.next == qp->data.end);
 
-	qt = QParserNextToken(qp);
+	qt = QParserLookahead(qp);
 	CuAssertTrue(tc, qt == 0);
 
 	qp = QParserFree(qp);
