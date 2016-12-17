@@ -1,4 +1,5 @@
-Think about LLVM.
+Things to Do
+============
 
 Update the website at http://quoha.org with information on the design.
 
